@@ -18,7 +18,7 @@ Chen Xueqing        3035638351
    3. Compile using `g++ -pedantic-errors -std=c++11 game_app.cpp -o game_app -lpthread`
    4. Run `game_app`
 - For Mac OS
-   - Ops! We don't support that. 
+   - Oops! We don't support that. 
 ***
 ## Game Description
 ### Overall Description
@@ -32,7 +32,7 @@ If the player fills the word within the given time, he/she can challenge the nex
 
 If time runs out before the word is filled, the game is over directly. 
 ### Ranking Method
-If a player passes all ten levels, he could be credited to the leaderboard. The player with more time left will get a higher ranking.
+If a player passes all ten levels, he/she could be credited to the leaderboard. The player with more time left will get a higher ranking.
 ***
 ## Planned Functions
 - `#include game_app.h` //include macro definitions and function declarations stored in game_app.h ***5.Program codes in multiple files*** 
@@ -54,4 +54,4 @@ If a player passes all ten levels, he could be credited to the leaderboard. The 
    - `void print_word(vector<string> , int);`
    - `void print_countdown(int &);`
 - `void judge();` //judge whether the player has passes the game
-- `void record(string, int);` // record the performance of player ***4.File input/output***
+- `void record(string, int);` // record the performance of the player ***4.File input/output***
