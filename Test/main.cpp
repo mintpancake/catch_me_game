@@ -15,17 +15,16 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __GAME_APP_H__
-#define __GAME_APP_H__
-
-#ifdef GAME_APP_H_GLOBAL
-#define GAME_APP_H_EXTERN
-#else
-#define GAME_APP_H_EXTERN extern
-#endif
-
-#define COL 51 //only odd number
-#define ROW 10
-#define DENSITY 20 //in 1000
-
-#endif // __GAME_APP_H__
+#include <iostream>
+#include <string>
+#include <vector>
+#include <thread>
+#include <chrono>
+#include <future>
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+#include <cstdint>
+#include <csignal>
+#include <unistd.h>

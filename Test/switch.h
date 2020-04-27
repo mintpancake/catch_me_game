@@ -15,17 +15,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __GAME_APP_H__
-#define __GAME_APP_H__
+#ifndef __SWITCH_H__
+#define __SWITCH_H__
 
-#ifdef GAME_APP_H_GLOBAL
-#define GAME_APP_H_EXTERN
+#ifdef SWITCH_H_GLOBAL
+#define SWITCH_H_EXTERN
 #else
-#define GAME_APP_H_EXTERN extern
+#define SWITCH_H_EXTERN extern
 #endif
 
-#define COL 51 //only odd number
-#define ROW 10
-#define DENSITY 20 //in 1000
+//define LINUX
 
-#endif // __GAME_APP_H__
+#endif // __SWITCH_H__

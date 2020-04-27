@@ -15,17 +15,13 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __GAME_APP_H__
-#define __GAME_APP_H__
+#ifndef __MAIN_H__
+#define __MAIN_H__
 
-#ifdef GAME_APP_H_GLOBAL
-#define GAME_APP_H_EXTERN
+#ifdef MAIN_H_GLOBAL
+#define MAIN_H_EXTERN
 #else
-#define GAME_APP_H_EXTERN extern
+#define MAIN_H_EXTERN extern
 #endif
 
-#define COL 51 //only odd number
-#define ROW 10
-#define DENSITY 20 //in 1000
-
-#endif // __GAME_APP_H__
+#endif // __MAIN_H__

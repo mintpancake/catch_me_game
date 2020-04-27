@@ -29,36 +29,12 @@
 #include <csignal>
 #include <unistd.h>
 
+#include "switch.h"
 #include "game_app.h"
+#include "welcome.h"
 
 #ifdef LINUX
-#include <termios.h>
-void setBufferedInput(bool enable)
-{
-    static bool enabled = true;
-    static struct termios old;
-    struct termios neo;
-    if (enable && !enabled)
-    {
-        // restore the former settings
-        tcsetattr(STDIN_FILENO, TCSANOW, &old);
-        // set the new state
-        enabled = true;
-    }
-    else if (!enable && enabled)
-    {
-        // get the terminal settings for standard input
-        tcgetattr(STDIN_FILENO, &neo);
-        // we want to keep the old setting to restore them at the end
-        old = neo;
-        // disable canonical mode (buffered i/o) and local echo
-        neo.c_lflag &= (~ICANON & ~ECHO);
-        // set the new settings immediately
-        tcsetattr(STDIN_FILENO, TCSANOW, &neo);
-        // set the new state
-        enabled = false;
-    }
-}
+#include "keyboard.h"
 #else
 #include <windows.h>
 #include <conio.h>
@@ -106,6 +82,8 @@ int main()
     int start;
     cout << "Press any key and enter to start..." << endl;
     cin >> start;
+    thread t_welcome(welcome);
+    t_welcome.join();
     srand(time(NULL));
     init();
 #ifdef LINUX

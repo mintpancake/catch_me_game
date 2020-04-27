@@ -15,17 +15,36 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __GAME_APP_H__
-#define __GAME_APP_H__
+#include "switch.h"
 
-#ifdef GAME_APP_H_GLOBAL
-#define GAME_APP_H_EXTERN
+#ifdef LINUX
+#include <termios.h>
+void setBufferedInput(bool enable)
+{
+    static bool enabled = true;
+    static struct termios old;
+    struct termios neo;
+    if (enable && !enabled)
+    {
+        // restore the former settings
+        tcsetattr(STDIN_FILENO, TCSANOW, &old);
+        // set the new state
+        enabled = true;
+    }
+    else if (!enable && enabled)
+    {
+        // get the terminal settings for standard input
+        tcgetattr(STDIN_FILENO, &neo);
+        // we want to keep the old setting to restore them at the end
+        old = neo;
+        // disable canonical mode (buffered i/o) and local echo
+        neo.c_lflag &= (~ICANON & ~ECHO);
+        // set the new settings immediately
+        tcsetattr(STDIN_FILENO, TCSANOW, &neo);
+        // set the new state
+        enabled = false;
+    }
+}
 #else
-#define GAME_APP_H_EXTERN extern
+void setBufferedInput(bool enable) {}
 #endif
-
-#define COL 51 //only odd number
-#define ROW 10
-#define DENSITY 20 //in 1000
-
-#endif // __GAME_APP_H__
