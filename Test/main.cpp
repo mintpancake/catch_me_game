@@ -96,7 +96,7 @@ void game()
         }
         fall->push(rand_str(fall->col));
         print();
-        judge();
+        status->won = (word->display == word->target);
         this_thread::sleep_for(chrono::milliseconds(500));
     }
     return;
@@ -203,7 +203,7 @@ string rand_str(int l)
     return s;
 }
 
-void print_fall()
+void print_upper()
 {
     for (vector<string>::iterator it = (fall->display).end() - 1; it != (fall->display).begin() - 1; it--)
     {
@@ -227,7 +227,7 @@ void print()
 #else
     std::system("cls");
 #endif
-    print_fall();
+    print_upper();
     player_line->print();
     cout << "\n\n";
     word->print();
@@ -255,11 +255,6 @@ bool update()
         return true;
     }
     return false;
-}
-
-void judge()
-{
-    status->won = (word->display == word->target);
 }
 
 void destroy()

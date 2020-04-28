@@ -157,11 +157,10 @@ void player();
 void tick();
 void init();
 std::string rand_str(int l);
-void print_fall();
+void print_upper();
 void print();
 char update_word(char c);
 bool update();
-void judge();
 void destroy();
 
 #endif // __MAIN_H__
