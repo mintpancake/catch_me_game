@@ -17,4 +17,4 @@ tar:
 
 .PHONY: clean tar
 
-# g++ -pedantic-errors -std=c++11 welcome.cpp keyboard.cpp game_app.cpp -o game_app.exe
+# g++ -pedantic-errors -std=c++11 welcome.cpp keyboard.cpp main.cpp -o main.exe
