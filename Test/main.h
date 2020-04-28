@@ -25,6 +25,8 @@
 #endif
 
 #define DENSITY 20 //in 1000
+#define WIDTH 51
+#define HEIGHT 11
 
 const int LIST_LENGTH = 10;
 const std::string word_list[LIST_LENGTH] = {"engineering", "hangman", "brainstorm", "random", "envelope", "interface", "iceberg", "humour", "lemon", "commander"};
@@ -41,7 +43,7 @@ public:
         this->row = row;
         for (int i = 0; i < this->row; i++)
         {
-            (this->display).push_back("");
+            (this->display).push_back(std::string(col, ' '));
         }
     }
     void push(std::string str)
@@ -134,7 +136,7 @@ public:
     int countdown;
     Timer()
     {
-        this->countdown = 100;
+        this->countdown = 5;
     };
     void print()
     {
@@ -146,21 +148,28 @@ class Status
 {
 public:
     bool won;
+    bool end;
+    bool time_up;
     Status()
     {
         this->won = false;
+        this->end = false;
+        this->time_up = false;
     }
 };
 
+void print_option(std::string str, bool at);
+void print_menu(int now_at);
+void menu(std::promise<int> &promiseObj);
 void game();
 void player();
 void tick();
 void init();
 std::string rand_str(int l);
-void print_upper();
 void print();
 char update_word(char c);
 bool update();
+void judge();
 void destroy();
 
 #endif // __MAIN_H__

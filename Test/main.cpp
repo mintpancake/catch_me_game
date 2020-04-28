@@ -21,6 +21,7 @@
 #include <thread>
 #include <chrono>
 #include <future>
+#include <utility>
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
@@ -44,34 +45,145 @@ using namespace std;
 
 Word *word = new Word{0, "", ""};
 Player_line *player_line = new Player_line{"", 25};
-Fall *fall = new Fall(51, 10);
+Fall *fall = new Fall(WIDTH, HEIGHT - 1);
 Timer *timer = new Timer();
 Status *status = new Status();
 
 int main()
 {
-    int start;
+    string start;
     cout << "Press any key and enter to start..." << endl;
     cin >> start;
+
     thread t_welcome(welcome);
     t_welcome.join();
-    init();
-#ifdef LINUX
-    setBufferedInput(false);
-#endif
-    thread t_game(game);
-    t_game.detach();
-    thread t_player(player);
-    t_player.detach();
-    thread t_timer(tick);
-    t_timer.join();
-    if (status->won)
+
+    int choice = -1;
+    while (choice != 4)
     {
+#ifdef LINUX
+        setBufferedInput(false);
+#endif
+        promise<int> promiseObj;
+        future<int> futureObj = promiseObj.get_future();
+        thread t_menu(menu, ref(promiseObj));
+        choice = futureObj.get();
+        t_menu.join();
+
 #ifdef LINUX
         setBufferedInput(true);
 #endif
-        cout << "Congratulations! You won!" << endl;
-        cout << "The word is \"" << word->target << "\"" << endl;
+
+        if (choice == 0) //New Game
+        {
+#ifdef LINUX
+            setBufferedInput(false);
+#endif
+            init();
+            thread t_game(game);
+            t_game.detach();
+
+            thread t_player(player);
+            t_player.detach();
+
+            thread t_timer(tick);
+            t_timer.join();
+        }
+        else if (choice == 1) //Load Game
+        {
+            //to be developed
+            string quit = "";
+            while (quit != "q")
+            {
+#ifdef LINUX
+                std::system("clear");
+#else
+                std::system("cls");
+#endif
+                cout << "Developing..." << endl;
+                cout << "quit? (enter q)";
+                cin >> quit;
+            }
+        }
+        else if (choice == 2) //Leaderboard
+        {
+            //to be developed
+            string quit = "";
+            while (quit != "q")
+            {
+#ifdef LINUX
+                std::system("clear");
+#else
+                std::system("cls");
+#endif
+                cout << "Developing..." << endl;
+                cout << "quit? (enter q)";
+                cin >> quit;
+            }
+        }
+        else if (choice == 3) //About
+        {
+            string quit = "";
+            while (quit != "q")
+            {
+#ifdef LINUX
+                std::system("clear");
+#else
+                std::system("cls");
+#endif
+                for (int i = 0; i < HEIGHT - 1; i++)
+                {
+                    if (i == 1)
+                    {
+                        print_option("Developer:", false);
+                    }
+                    else if (i == 3)
+                    {
+                        print_option("Lu Meng", false);
+                    }
+                    else if (i == 4)
+                    {
+                        print_option("Chen Xueqing", false);
+                    }
+                    else if (i == 6)
+                    {
+                        print_option("2020 The University of Hong Kong", false);
+                    }
+                    else
+                    {
+                        print_option("", false);
+                    }
+                }
+                cout << "quit? (enter q)";
+                cin >> quit;
+            }
+        }
+        else
+        {
+#ifdef LINUX
+            std::system("clear");
+#else
+            std::system("cls");
+#endif
+            cout << "Bye bye!" << endl;
+            break;
+        }
+
+        if (status->won)
+        {
+#ifdef LINUX
+            setBufferedInput(true);
+#endif
+            cout << "Congratulations! You won!" << endl;
+            cout << "The word is \"" << word->target << "\"" << endl;
+            string restart = "";
+            cout << "restart? (y/n)";
+            cin >> restart;
+            if (restart != "y")
+            {
+                break;
+            }
+        }
     }
 #ifndef LINUX
     std::system("pause");
@@ -80,31 +192,55 @@ int main()
     return 0;
 }
 
-void game()
+void print_option(string str, bool at)
 {
-    bool caught = false;
-    while (!(status->won))
+    char fill = ' ';
+    if (at)
     {
-        caught = update();
-        if (caught)
+        fill = '#';
+    }
+    int front_sep, back_sep;
+    if ((WIDTH - str.length()) % 2 == 1)
+    {
+        front_sep = (WIDTH - str.length()) / 2;
+        back_sep = (WIDTH - str.length()) / 2 + 1;
+    }
+    else
+    {
+        front_sep = (WIDTH - str.length()) / 2;
+        back_sep = (WIDTH - str.length()) / 2;
+    }
+    cout << string(front_sep, fill) << str << string(back_sep, fill) << endl;
+}
+
+void print_menu(int now_at)
+{
+    string options[6] = {"New Game", "Load Game", "Show Leaderboard", "About", "Quit", "(use up/down and enter to select)"};
+    const int OFFSET = 2;
+#ifdef LINUX
+    std::system("clear");
+#else
+    std::system("cls");
+#endif
+    for (int i = 0; i < HEIGHT; i++)
+    {
+        bool at = (i == (now_at + OFFSET));
+        if (i >= OFFSET && i <= OFFSET + 5)
         {
-            player_line->fill_bucket(1);
+            print_option(options[i - OFFSET], at);
         }
         else
         {
-            player_line->fill_bucket(0);
+            print_option("", false);
         }
-        fall->push(rand_str(fall->col));
-        print();
-        status->won = (word->display == word->target);
-        this_thread::sleep_for(chrono::milliseconds(500));
     }
-    return;
 }
 
-void player()
+void menu(std::promise<int> &promiseObj)
 {
-#ifdef LINUX
+    int now_at = 0;
+    print_menu(now_at);
+#ifdef LINUX // TODOTODO
     int ch1, ch2, ch3;
     while (!(status->won))
     {
@@ -137,7 +273,101 @@ void player()
     return;
 #else
     int ch1, ch2;
-    while (!(status->won))
+    while (1)
+    {
+        ch1 = -1;
+        ch2 = -1;
+        if (_kbhit())
+        {
+            ch1 = _getch();
+            if (ch1 == 224)
+            {
+                ch2 = _getch();
+                if (ch2 == 72 && now_at > 0) //up
+                {
+                    now_at--;
+                }
+                else if (ch2 == 80 && now_at < 4) //down
+                {
+                    now_at++;
+                }
+            }
+            else if (ch1 == 13) //enter
+            {
+                promiseObj.set_value(now_at);
+                return;
+            }
+            else
+            {
+                goto sleep;
+            }
+            print_menu(now_at);
+        }
+    sleep:
+        this_thread::sleep_for(chrono::milliseconds(20));
+    }
+    return;
+#endif
+}
+
+void game()
+{
+    bool caught = false;
+    while (!status->end)
+    {
+        caught = update();
+        if (caught)
+        {
+            player_line->fill_bucket(1);
+        }
+        else
+        {
+            player_line->fill_bucket(0);
+        }
+        fall->push(rand_str(fall->col));
+        print();
+        judge();
+        this_thread::sleep_for(chrono::milliseconds(500));
+    }
+    return;
+}
+
+void player()
+{
+#ifdef LINUX
+    int ch1, ch2, ch3;
+    while (!status->end)
+    {
+        ch1 = -1;
+        ch2 = -1;
+        ch3 = -1;
+        ch1 = getchar();
+        if (ch1 != 27)
+        {
+            goto sleep;
+        }
+        ch2 = getchar();
+        if (ch2 != 91)
+        {
+            goto sleep;
+        }
+        ch3 = getchar();
+        if (ch3 == 68 && player_line->index > 1) //left
+        {
+            player_line->update(-1);
+        }
+        else if (ch3 == 67 && player_line->index < fall->col - 2) //right
+        {
+            player_line->update(1);
+        }
+        print();
+    sleep:
+        this_thread::sleep_for(chrono::milliseconds(20));
+    }
+    return;
+#else
+    int ch1, ch2;
+    while (!status->end)
     {
         ch1 = -1;
         ch2 = -1;
@@ -169,9 +399,16 @@ void player()
 void tick()
 {
     static int period = 1000;
-    while (!(status->won))
+    while (!status->end)
     {
-        timer->countdown--;
+        if (timer->countdown > 0)
+        {
+            timer->countdown--;
+        }
+        else
+        {
+            status->time_up = true;
+        }
         this_thread::sleep_for(chrono::milliseconds(period));
     }
 }
@@ -203,13 +440,19 @@ string rand_str(int l)
     return s;
 }
 
-void print_upper()
+void print()
 {
+#ifdef LINUX
+    std::system("clear");
+#else
+    std::system("cls");
+#endif
+
     for (vector<string>::iterator it = (fall->display).end() - 1; it != (fall->display).begin() - 1; it--)
     {
         if (it == (fall->display).end() - 1)
         {
-            cout << *it << " ";
+            cout << *it;
             timer->print();
             cout << endl;
         }
@@ -218,20 +461,11 @@ void print_upper()
             cout << *it << endl;
         }
     }
-}
 
-void print()
-{
-#ifdef LINUX
-    std::system("clear");
-#else
-    std::system("cls");
-#endif
-    print_upper();
     player_line->print();
     cout << "\n\n";
     word->print();
-    cout << "\n";
+    cout << endl;
 }
 
 char update_word(char c)
@@ -255,6 +489,15 @@ bool update()
         return true;
     }
     return false;
+}
+
+void judge()
+{
+    status->won = (word->target == word->display);
+    if (status->won || status->time_up)
+    {
+        status->end = true;
+    }
 }
 
 void destroy()
