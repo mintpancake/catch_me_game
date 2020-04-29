@@ -84,7 +84,7 @@ int main()
                     std::cout << "Congratulations! You guessed right!" << endl;
                     std::cout << "The word is \"" << word->target << "\". " << endl;
                     std::cout << "Your remaining time is " << timer->countdown << " second(s). " << endl;
-                    std::cout << "You level is " << level << ". " << endl;
+                    std::cout << "Your level is " << level << ". " << endl;
                     std::cout << endl;
                     if (level == 10)
                     {
@@ -130,7 +130,7 @@ int main()
                     std::cout << endl;
                     std::cout << "Sorry! Time's up!" << endl;
                     std::cout << "The word is \"" << word->target << "\". " << endl;
-                    std::cout << "You level is " << level << ". " << endl;
+                    std::cout << "Your level is " << level << ". " << endl;
                     std::cout << endl;
                     if (level == 1 || level == 2 || level == 3)
                     {
