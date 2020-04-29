@@ -24,7 +24,7 @@
 #define MENU_H_EXTERN extern
 #endif
 
-#define WIDTH 51
+#define LENGTH 51
 
 void print_option(std::string str, bool at);
 void print_menu(int now_at);

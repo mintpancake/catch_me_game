@@ -32,6 +32,7 @@
 #define RIGHT 4
 #define E 5
 #define YES 6
+#define QUIT 7
 
 void setBufferedInput(bool enable);
 int getkey();

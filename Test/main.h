@@ -28,18 +28,121 @@
 #define WIDTH 51
 #define HEIGHT 11
 
+#define CORRECT 1
+#define WRONG -1
+#define BLANK 0
+
 const int LIST_LENGTH = 100;
 const std::string word_list[LIST_LENGTH] = {
-    "panda", "shirt", "sorry", "drink", "white", "zero", "lemon", "result", "humor", "sleepy",
-    "police", "shower", "morning", "summer", "teacher", "mobile", "society", "pardon", "flower", "culture",
-    "umbrella", "window", "yesterday", "kitchen", "theater", "pancake", "sandwich", "bamboo", "random", "discuss",
-    "birthday", "engineering", "expensive", "headache", "history", "introduce", "newspaper", "strawberry", "vegetable", "watermelon",
-    "activity", "achieve", "apology", "jewelry", "laundry", "forgive", "festival", "neighbor", "between", "calculate",
-    "abnormal", "abundant", "adjustment", "bridegroom", "bungalow", "communicate", "information", "keyboard", "envelope", "interface",
-    "circumstance", "coincidence", "compulsory", "deliberate", "earthquake", "kindergarten", "literature", "brainstorm", "commander", "phenomena",
-    "formula", "graduate", "heritage", "fortunate", "balcony", "standard", "feedback", "dwelling", "estimate", "innocent",
-    "advertisement", "approximate", "emergency", "individual", "instrument", "percentage", "represent", "scholarship", "convention", "significant",
-    "acquaintance", "atmosphere", "congratulate", "paramount", "hurricane", "incredible", "architecture", "deficiency", "transaction", "distinguish", 
+    "panda",
+    "shirt",
+    "sorry",
+    "drink",
+    "white",
+    "zero",
+    "lemon",
+    "result",
+    "humor",
+    "sleepy",
+
+    "police",
+    "shower",
+    "morning",
+    "summer",
+    "teacher",
+    "mobile",
+    "society",
+    "pardon",
+    "flower",
+    "culture",
+
+    "umbrella",
+    "window",
+    "yesterday",
+    "kitchen",
+    "theater",
+    "pancake",
+    "sandwich",
+    "bamboo",
+    "random",
+    "discuss",
+
+    "birthday",
+    "engineering",
+    "expensive",
+    "headache",
+    "history",
+    "introduce",
+    "newspaper",
+    "strawberry",
+    "vegetable",
+    "watermelon",
+
+    "activity",
+    "achieve",
+    "apology",
+    "jewelry",
+    "laundry",
+    "forgive",
+    "festival",
+    "neighbor",
+    "between",
+    "calculate",
+
+    "abnormal",
+    "abundant",
+    "adjustment",
+    "bridegroom",
+    "bungalow",
+    "communicate",
+    "information",
+    "keyboard",
+    "envelope",
+    "interface",
+
+    "circumstance",
+    "coincidence",
+    "compulsory",
+    "deliberate",
+    "earthquake",
+    "kindergarten",
+    "literature",
+    "brainstorm",
+    "commander",
+    "phenomena",
+
+    "formula",
+    "graduate",
+    "heritage",
+    "fortunate",
+    "balcony",
+    "standard",
+    "feedback",
+    "dwelling",
+    "estimate",
+    "innocent",
+
+    "advertisement",
+    "approximate",
+    "emergency",
+    "individual",
+    "instrument",
+    "percentage",
+    "represent",
+    "scholarship",
+    "convention",
+    "significant",
+
+    "acquaintance",
+    "atmosphere",
+    "congratulate",
+    "paramount",
+    "hurricane",
+    "incredible",
+    "architecture",
+    "deficiency",
+    "transaction",
+    "distinguish",
 };
 
 class Fall
@@ -111,14 +214,25 @@ public:
         {
             if ((this->display).find("_") != std::string::npos)
             {
-                (this->display).replace((this->display).find("_"), 1, "+");
+                (this->display).replace((this->display).find("_"), 1, "o");
+            }
+        }
+        else if (m == -1)
+        {
+            if ((this->display).find("_") != std::string::npos)
+            {
+                (this->display).replace((this->display).find("_"), 1, "x");
             }
         }
         else
         {
-            if ((this->display).find("+") != std::string::npos)
+            if ((this->display).find("o") != std::string::npos)
             {
-                (this->display).replace((this->display).find("+"), 1, "_");
+                (this->display).replace((this->display).find("o"), 1, "_");
+            }
+            if ((this->display).find("x") != std::string::npos)
+            {
+                (this->display).replace((this->display).find("x"), 1, "_");
             }
         }
     }
@@ -145,9 +259,11 @@ class Timer
 {
 public:
     int countdown;
-    Timer()
+    bool deducted;
+    Timer(int countdown)
     {
-        this->countdown = 50;
+        this->countdown = countdown;
+        this->deducted = false;
     };
     void print()
     {
@@ -178,9 +294,10 @@ void tick();
 void init();
 std::string rand_str(int l);
 void print();
-char update_word(char c);
-bool update();
+int update_word(char c);
+void update();
 void judge();
 void destroy();
+void record(std::string playerName, int time);
 
 #endif // __MAIN_H__

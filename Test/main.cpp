@@ -16,6 +16,8 @@
  ***************************************************************************/
 
 #include <iostream>
+#include <iomanip>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <thread>
@@ -41,30 +43,30 @@ using namespace std;
 Word *word = new Word{0, "", ""};
 Player_line *player_line = new Player_line{"", 25};
 Fall *fall = new Fall(WIDTH, HEIGHT - 1);
-Timer *timer = new Timer();
+Timer *timer = new Timer(100);
 Status *status = new Status();
+int level = 1;
+int leftTime = 0;
+string playerName;
 
 int main()
 {
-    //string start;
-    //cout << "Press any key and enter to start..." << endl;
-    //cin >> start;
-
-    //welcome();
+    welcome();
+    std::cout << "\n\n";
+    print_option("Welcome!", false);
+    print_option("Please tell me your nickname: ", false);
+    std::cout << string(21, ' ');
+    std::cin >> playerName;
     while (1)
     {
 #ifdef LINUX
         setBufferedInput(false);
 #endif
         int choice = menu();
-        int level=1;
-        int leftTime=0;
-        string playerName;
         if (choice == 0)
-        {   
-            cout << "Please tell me your nick name: " << endl;
-            cin >> playerName;
-            while (level <= 10){
+        {
+            while (level <= 10)
+            {
                 destroy();
                 init();
                 thread t_game(game);
@@ -78,41 +80,154 @@ int main()
 
                 if (status->won)
                 {
-                    cout << "Congratulations! You won!" << endl;
-                    cout << "The word is \"" << word->target << "\". " << endl;
-                    cout << "You remaining time is " << timer->countdown << " seconds. " << endl;
-                    cout << "Please prepare for the next level, " << playerName << "!" << endl; 
-                }
-                else if (status->time_up || 1)
-                {
-                    cout << "Sorry! Time's up!" << endl;
-                    cout << "The word is \"" << word->target << "\". " << endl;
-                    cout << endl;
-                    if (level == 1 || level == 2 || level == 3)
-                        cout << "To be honest, the performance is not good, " << playerName << "." << endl;
-                    if (level == 4 || level == 5 || level == 6)
-                        cout << "This is a good try, " << playerName << ". " << "Keep it up!" << endl;
-                    if (level == 4 || level == 5 || level == 6)
-                        cout << "Good job, " << playerName << ". " << "You are close to success!" << endl;
+                    std::cout << endl;
+                    std::cout << "Congratulations! You guessed right!" << endl;
+                    std::cout << "The word is \"" << word->target << "\". " << endl;
+                    std::cout << "Your remaining time is " << timer->countdown << " second(s). " << endl;
+                    std::cout << "You level is " << level << ". " << endl;
+                    std::cout << endl;
                     if (level == 10)
-                        cout << "Excellent! You are only one step away from success, " << playerName << "." << endl;
-                    cout << "Back to menu? (y)" << endl;
+                    {
+                        std::cout << "Unbelievable! You did it, " << playerName << "!" << endl;
+                        std::cout << "Your great performance is recorded in the leaderboard!" << endl;
+                        record(playerName, timer->countdown);
+                        std::cout << endl;
+                        std::cout << "Back to menu? (q)" << endl;
+                        int key = getkey();
+                        while (key != QUIT)
+                        {
+                            key = getkey();
+                            this_thread::sleep_for(chrono::milliseconds(100));
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        std::cout << "Please prepare for the next level, " << playerName << "!" << endl;
+                        std::cout << endl;
+                        std::cout << "Ready? (y)" << endl;
+                        int key = getkey();
+                        while (key != YES)
+                        {
+                            key = getkey();
+                            this_thread::sleep_for(chrono::milliseconds(100));
+                        }
+                        leftTime = timer->countdown;
+                        level++;
+                        continue;
+                    }
+                }
+                else if (status->time_up)
+                {
+                    std::cout << endl;
+                    std::cout << "Sorry! Time's up!" << endl;
+                    std::cout << "The word is \"" << word->target << "\". " << endl;
+                    std::cout << "You level is " << level << ". " << endl;
+                    std::cout << endl;
+                    if (level == 1 || level == 2 || level == 3)
+                    {
+                        std::cout << "To be honest, your performance is not good, " << playerName << "." << endl;
+                    }
+                    else if (level == 4 || level == 5 || level == 6)
+                    {
+                        std::cout << "This is a good try, " << playerName << ". "
+                                  << "Keep it up!" << endl;
+                    }
+                    else if (level == 7 || level == 8 || level == 9)
+                    {
+                        std::cout << "Good job, " << playerName << ". "
+                                  << "You are close to success!" << endl;
+                    }
+                    if (level == 10)
+                    {
+                        std::cout
+                            << "Excellent! You are only one step away from success, " << playerName << "." << endl;
+                    }
+
+                    std::cout << "Your performance is recorded in the leaderboard!" << endl;
+                    record(playerName, timer->countdown);
+                    std::cout << endl;
+                    std::cout << "Back to menu? (q)" << endl;
                     int key = getkey();
-                    while (key != YES)
+                    while (key != QUIT)
                     {
                         key = getkey();
                         this_thread::sleep_for(chrono::milliseconds(100));
                     }
+                    break;
                 }
-                level++;
             }
-            if (level == 10)
+        }
+        else if (choice == 1)
+        {
+#ifdef LINUX
+            std::system("clear");
+#else
+            std::system("cls");
+#endif
+            //to be implemented
+            std::cout << endl;
+            std::cout << "Back to menu? (q)" << endl;
+            int key = getkey();
+            while (key != QUIT)
             {
-                cout << "Unbelievable! You did it, " << playerName << "!"<<endl;
-                cout << "Your great performance will be recorded into the leaderboard!" << endl;
-                record(playerName, timer->countdown);
+                key = getkey();
+                this_thread::sleep_for(chrono::milliseconds(100));
             }
-
+            continue;
+        }
+        else if (choice == 2)
+        {
+#ifdef LINUX
+            std::system("clear");
+#else
+            std::system("cls");
+#endif
+            //to be implemented
+            std::cout << endl;
+            std::cout << "Back to menu? (q)" << endl;
+            int key = getkey();
+            while (key != QUIT)
+            {
+                key = getkey();
+                this_thread::sleep_for(chrono::milliseconds(100));
+            }
+            continue;
+        }
+        else if (choice == 3)
+        {
+#ifdef LINUX
+            std::system("clear");
+#else
+            std::system("cls");
+#endif
+            std::cout << endl;
+            print_option("Developers:", false);
+            std::cout << endl;
+            print_option("Chen Xueqing", false);
+            print_option("Lu Meng", false);
+            std::cout << endl;
+            print_option("2020 The University of Hong Kong", false);
+            std::cout << endl;
+            std::cout << "Back to menu? (q)" << endl;
+            int key = getkey();
+            while (key != QUIT)
+            {
+                key = getkey();
+                this_thread::sleep_for(chrono::milliseconds(100));
+            }
+            continue;
+        }
+        else if (choice == 4)
+        {
+#ifdef LINUX
+            std::system("clear");
+#else
+            std::system("cls");
+#endif
+            std::cout << "Thank you, " << playerName << "!" << endl;
+            std::cout << "Byebye!" << endl;
+            break;
         }
         else
         {
@@ -124,6 +239,9 @@ int main()
     }
 
     destroy();
+#ifdef LINUX
+    setBufferedInput(true);
+#endif
 #ifndef LINUX
     std::system("pause");
 #endif
@@ -133,18 +251,9 @@ int main()
 void game()
 {
     srand(time(NULL));
-    bool caught = false;
     while (!status->end)
     {
-        caught = update();
-        if (caught)
-        {
-            player_line->fill_bucket(1);
-        }
-        else
-        {
-            player_line->fill_bucket(0);
-        }
+        update();
         fall->push(rand_str(fall->col));
         print();
         judge();
@@ -168,11 +277,11 @@ void player()
         }
         else
         {
-            this_thread::sleep_for(chrono::milliseconds(100));
+            this_thread::sleep_for(chrono::milliseconds(20));
             continue;
         }
         print();
-        this_thread::sleep_for(chrono::milliseconds(100));
+        this_thread::sleep_for(chrono::milliseconds(20));
     }
 }
 
@@ -194,15 +303,21 @@ void tick()
 
 void init()
 {
+    srand(time(NULL));
     word = new Word{0, "", ""};
     player_line = new Player_line{"", 25};
     fall = new Fall(WIDTH, HEIGHT - 1);
-    timer = new Timer();
+    timer = new Timer(100 + leftTime);
     status = new Status();
-    srand(time(NULL));
-    word->init(word_list[(rand() % 10])+(level-1)*10);
-    int initReveal=rand()%26;
-    word->reveal('a'+initReveal);
+    if (playerName == "Debug")
+    {
+        word->init("testestest");
+    }
+    else
+    {
+        word->init(word_list[(rand() % 10) + (level - 1) * 10]);
+    }
+    word->reveal((word->target)[rand() % (word->target).length()]);
     player_line->init(fall->col);
 }
 
@@ -236,51 +351,74 @@ void print()
 
     for (vector<string>::iterator it = (fall->display).end() - 1; it != (fall->display).begin() - 1; it--)
     {
-        if (it == (fall->display).end() - 1)
+        if (it == (fall->display).end() - 2)
         {
-            cout << *it;
+            std::cout << *it;
             timer->print();
-            cout << endl;
+            if (timer->deducted)
+            {
+                std::cout << "-3";
+                timer->deducted = false;
+            }
+            std::cout << endl;
         }
-        else if (it == (fall->display).end() - 2)
+        else if (it == (fall->display).end() - 1)
         {
-            cout << *it;
-            cout << "CURRENT LEVEL: "<<level;
-            cout << endl;
+            std::cout << *it;
+            std::cout << "    LEVEL: " << level << endl;
         }
         else
         {
-            cout << *it << endl;
+            std::cout << *it << endl;
         }
     }
 
     player_line->print();
-    cout << "\n\n";
+    std::cout << endl;
+    std::cout << "TARGET: ";
     word->print();
-    cout << endl;
+    std::cout << endl;
 }
 
-char update_word(char c)
+int update_word(char c)
 {
-    int pos = (word->target).find(c);
-    if (pos != string::npos)
+    if (c == ' ')
+    {
+        return BLANK;
+    }
+    else if ((word->target).find(c) != string::npos)
     {
         word->reveal(c);
-        return c;
+        return CORRECT;
     }
-    return '\0';
+    else
+    {
+        return WRONG;
+    }
 }
 
-bool update()
+void update()
 {
-    char left = update_word((fall->display)[0][player_line->index - 1]);
-    char mid = update_word((fall->display)[0][player_line->index]);
-    char right = update_word((fall->display)[0][player_line->index + 1]);
-    if (left != '\0' || mid != '\0' || right != '\0')
+    bool recover = true;
+    int left = update_word((fall->display)[0][player_line->index - 1]);
+    int mid = update_word((fall->display)[0][player_line->index]);
+    int right = update_word((fall->display)[0][player_line->index + 1]);
+    if (left == CORRECT || mid == CORRECT || right == CORRECT)
     {
-        return true;
+        player_line->fill_bucket(1);
+        recover = false;
     }
-    return false;
+    if (left == WRONG || mid == WRONG || right == WRONG)
+    {
+        player_line->fill_bucket(-1);
+        timer->countdown -= 3;
+        timer->deducted = true;
+        recover = false;
+    }
+    if (recover)
+    {
+        player_line->fill_bucket(0);
+    }
 }
 
 void judge()
@@ -294,34 +432,52 @@ void judge()
 
 void destroy()
 {
-    delete word;
-    word = NULL;
-    delete player_line;
-    player_line = NULL;
-    delete fall;
-    fall = NULL;
-    delete timer;
-    timer = NULL;
-    delete status;
-    status = NULL;
+    if (word != NULL)
+    {
+        delete word;
+        word = NULL;
+    }
+    if (player_line != NULL)
+    {
+        delete player_line;
+        player_line = NULL;
+    }
+    if (fall != NULL)
+    {
+        delete fall;
+        fall = NULL;
+    }
+    if (timer != NULL)
+    {
+        delete timer;
+        timer = NULL;
+    }
+    if (status != NULL)
+    {
+        delete status;
+        status = NULL;
+    }
 }
 
 void record(string playerName, int time)
 {
-    vector <string> oldRecords;
+    vector<string> oldRecords;
+    string s;
     ifstream fin;
     fin.open("leaderboard.txt");
-    while (getline(fin, s)){
+    while (getline(fin, s))
+    {
         oldRecords.push_back(s.substr(10));
     }
     int size = oldRecords.size();
     int i = 0;
-    while (i<size){
-        if (oldRecords[i].substr(10) >= time )
+    while (i < size)
+    {
+        if (atoi(oldRecords[i].substr(10).c_str()) >= time)
         {
             continue;
         }
-        if (oldRecords[i].substr(10) < time)
+        else
         {
             break;
         }
@@ -329,14 +485,14 @@ void record(string playerName, int time)
     }
     ofstream fout;
     fout.open("leaderboard.txt");
-    for (int j=0; j<i; j++)
+    for (int j = 0; j < i; j++)
     {
         fout << left << setw(10) << j << oldRecords[j] << endl;
     }
     fout << left << setw(10) << i << setw(10) << playerName << setw(10) << time << endl;
-    for (int j=i+1; j<=size; j++)
+    for (int j = i + 1; j <= size; j++)
     {
-        fout << left << setw(10) << j << oldRecords[j-1] << endl;
+        fout << left << setw(10) << j << oldRecords[j - 1] << endl;
     }
 
     fin.close();

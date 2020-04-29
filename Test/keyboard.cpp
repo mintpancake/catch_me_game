@@ -105,6 +105,10 @@ int getkey()
     {
         return YES;
     }
+    else if (ch1 == 113)
+    {
+        return QUIT;
+    }
     else
     {
         return ERR;
@@ -159,6 +163,10 @@ int getkey()
         else if (ch1 == 121)
         {
             return YES;
+        }
+        else if (ch1 == 113)
+        {
+            return QUIT;
         }
         else
         {

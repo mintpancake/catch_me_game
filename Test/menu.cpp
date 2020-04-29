@@ -35,7 +35,7 @@
 
 using namespace std;
 
-const string options[6] = {"New Game", "Load Game", "Show Leaderboard", "About", "Quit", "[up/down to select | e to enter]"};
+const string options[6] = {"Start", "Instructions", "Show Leaderboard", "About", "Quit", "[up/down to select | e to enter]"};
 
 void print_option(string str, bool at)
 {
@@ -45,15 +45,15 @@ void print_option(string str, bool at)
         fill = '-';
     }
     int front_sep, back_sep;
-    if ((WIDTH - str.length()) % 2 == 1)
+    if ((LENGTH - str.length()) % 2 == 1)
     {
-        front_sep = (WIDTH - str.length()) / 2;
-        back_sep = (WIDTH - str.length()) / 2 + 1;
+        front_sep = (LENGTH - str.length()) / 2;
+        back_sep = (LENGTH - str.length()) / 2 + 1;
     }
     else
     {
-        front_sep = (WIDTH - str.length()) / 2;
-        back_sep = (WIDTH - str.length()) / 2;
+        front_sep = (LENGTH - str.length()) / 2;
+        back_sep = (LENGTH - str.length()) / 2;
     }
     cout << string(front_sep, fill) << str << string(back_sep, fill) << endl;
 }
