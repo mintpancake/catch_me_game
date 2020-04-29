@@ -136,7 +136,7 @@ public:
     int countdown;
     Timer()
     {
-        this->countdown = 5;
+        this->countdown = 3;
     };
     void print()
     {
@@ -160,7 +160,7 @@ public:
 
 void print_option(std::string str, bool at);
 void print_menu(int now_at);
-void menu(std::promise<int> &promiseObj);
+int menu();
 void game();
 void player();
 void tick();
