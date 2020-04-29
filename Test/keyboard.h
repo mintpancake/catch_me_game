@@ -30,6 +30,8 @@
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
+#define E 5
+#define YES 6
 
 void setBufferedInput(bool enable);
 int getkey();

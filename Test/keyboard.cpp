@@ -97,6 +97,14 @@ int getkey()
     {
         return ENTER;
     }
+    else if (ch1 == 101)
+    {
+        return E;
+    }
+    else if (ch1 == 121)
+    {
+        return YES;
+    }
     else
     {
         return ERR;
@@ -143,6 +151,14 @@ int getkey()
         else if (ch1 == 13) //enter
         {
             return ENTER;
+        }
+        else if (ch1 == 101)
+        {
+            return E;
+        }
+        else if (ch1 == 121)
+        {
+            return YES;
         }
         else
         {

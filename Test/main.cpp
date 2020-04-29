@@ -46,13 +46,16 @@ Status *status = new Status();
 
 int main()
 {
-    string start;
-    cout << "Press any key and enter to start..." << endl;
-    cin >> start;
+    //string start;
+    //cout << "Press any key and enter to start..." << endl;
+    //cin >> start;
 
     //welcome();
     while (1)
     {
+#ifdef LINUX
+        setBufferedInput(false);
+#endif
         int choice = menu();
         if (choice == 0)
         {
@@ -79,16 +82,25 @@ int main()
             {
                 cout << "Sorry! Time's up!" << endl;
                 cout << "The word is \"" << word->target << "\". " << endl;
-                int restart;
-                cin >> restart;
+                cout << endl;
+                cout << "Back to menu? (y)" << endl;
+                int key = getkey();
+                while (key != YES)
+                {
+                    key = getkey();
+                    this_thread::sleep_for(chrono::milliseconds(100));
+                }
             }
         }
         else
         {
             continue;
         }
+#ifdef LINUX
+        setBufferedInput(true);
+#endif
     }
-    
+
     destroy();
 #ifndef LINUX
     std::system("pause");
@@ -121,9 +133,6 @@ void game()
 
 void player()
 {
-#ifdef LINUX
-    setBufferedInput(false);
-#endif
     while (!status->end)
     {
         int key = getkey();
@@ -143,10 +152,6 @@ void player()
         print();
         this_thread::sleep_for(chrono::milliseconds(100));
     }
-#ifdef LINUX
-    setBufferedInput(true);
-    //std::system("echo -e \"\\n\"");
-#endif
 }
 
 void tick()

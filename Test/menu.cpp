@@ -35,7 +35,7 @@
 
 using namespace std;
 
-const string options[6] = {"New Game", "Load Game", "Show Leaderboard", "About", "Quit", "[up/down to select | enter to go]"};
+const string options[6] = {"New Game", "Load Game", "Show Leaderboard", "About", "Quit", "[up/down to select | e to enter]"};
 
 void print_option(string str, bool at)
 {
@@ -75,9 +75,6 @@ void print_menu(int now_at)
 
 int menu()
 {
-#ifdef LINUX
-    setBufferedInput(false);
-#endif
     int now_at = 0;
     print_menu(now_at);
     while (1)
@@ -91,12 +88,8 @@ int menu()
         {
             now_at++;
         }
-        else if (key == ENTER)
+        else if (key == E)
         {
-#ifdef LINUX
-            setBufferedInput(true);
-            //std::system("echo -e \"\\n\"");
-#endif
             return now_at;
         }
         else
