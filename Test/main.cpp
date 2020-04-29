@@ -57,40 +57,62 @@ int main()
         setBufferedInput(false);
 #endif
         int choice = menu();
+        int level=1;
+        int leftTime=0;
+        string playerName;
         if (choice == 0)
-        {
-            destroy();
-            init();
-            thread t_game(game);
-            t_game.detach();
+        {   
+            cout << "Please tell me your nick name: " << endl;
+            cin >> playerName;
+            while (level <= 10){
+                destroy();
+                init();
+                thread t_game(game);
+                t_game.detach();
 
-            thread t_player(player);
-            t_player.detach();
+                thread t_player(player);
+                t_player.detach();
 
-            thread t_timer(tick);
-            t_timer.join();
+                thread t_timer(tick);
+                t_timer.join();
 
-            if (status->won)
-            {
-                cout << "Congratulations! You won!" << endl;
-                cout << "The word is \"" << word->target << "\". " << endl;
-                cout << "You remaining time is " << timer->countdown << " seconds. " << endl;
-                int restart;
-                cin >> restart;
-            }
-            else if (status->time_up || 1)
-            {
-                cout << "Sorry! Time's up!" << endl;
-                cout << "The word is \"" << word->target << "\". " << endl;
-                cout << endl;
-                cout << "Back to menu? (y)" << endl;
-                int key = getkey();
-                while (key != YES)
+                if (status->won)
                 {
-                    key = getkey();
-                    this_thread::sleep_for(chrono::milliseconds(100));
+                    cout << "Congratulations! You won!" << endl;
+                    cout << "The word is \"" << word->target << "\". " << endl;
+                    cout << "You remaining time is " << timer->countdown << " seconds. " << endl;
+                    cout << "Please prepare for the next level, " << playerName << "!" << endl; 
                 }
+                else if (status->time_up || 1)
+                {
+                    cout << "Sorry! Time's up!" << endl;
+                    cout << "The word is \"" << word->target << "\". " << endl;
+                    cout << endl;
+                    if (level == 1 || level == 2 || level == 3)
+                        cout << "To be honest, the performance is not good, " << playerName << "." << endl;
+                    if (level == 4 || level == 5 || level == 6)
+                        cout << "This is a good try, " << playerName << ". " << "Keep it up!" << endl;
+                    if (level == 4 || level == 5 || level == 6)
+                        cout << "Good job, " << playerName << ". " << "You are close to success!" << endl;
+                    if (level == 10)
+                        cout << "Excellent! You are only one step away from success, " << playerName << "." << endl;
+                    cout << "Back to menu? (y)" << endl;
+                    int key = getkey();
+                    while (key != YES)
+                    {
+                        key = getkey();
+                        this_thread::sleep_for(chrono::milliseconds(100));
+                    }
+                }
+                level++;
             }
+            if (level == 10)
+            {
+                cout << "Unbelievable! You did it, " << playerName << "!"<<endl;
+                cout << "Your great performance will be recorded into the leaderboard!" << endl;
+                record(playerName, timer->countdown);
+            }
+
         }
         else
         {
@@ -178,7 +200,9 @@ void init()
     timer = new Timer();
     status = new Status();
     srand(time(NULL));
-    word->init(word_list[rand() % LIST_LENGTH]);
+    word->init(word_list[(rand() % 10])+(level-1)*10);
+    int initReveal=rand()%26;
+    word->reveal('a'+initReveal);
     player_line->init(fall->col);
 }
 
@@ -216,6 +240,12 @@ void print()
         {
             cout << *it;
             timer->print();
+            cout << endl;
+        }
+        else if (it == (fall->display).end() - 2)
+        {
+            cout << *it;
+            cout << "CURRENT LEVEL: "<<level;
             cout << endl;
         }
         else
@@ -274,4 +304,41 @@ void destroy()
     timer = NULL;
     delete status;
     status = NULL;
+}
+
+void record(string playerName, int time)
+{
+    vector <string> oldRecords;
+    ifstream fin;
+    fin.open("leaderboard.txt");
+    while (getline(fin, s)){
+        oldRecords.push_back(s.substr(10));
+    }
+    int size = oldRecords.size();
+    int i = 0;
+    while (i<size){
+        if (oldRecords[i].substr(10) >= time )
+        {
+            continue;
+        }
+        if (oldRecords[i].substr(10) < time)
+        {
+            break;
+        }
+        i++;
+    }
+    ofstream fout;
+    fout.open("leaderboard.txt");
+    for (int j=0; j<i; j++)
+    {
+        fout << left << setw(10) << j << oldRecords[j] << endl;
+    }
+    fout << left << setw(10) << i << setw(10) << playerName << setw(10) << time << endl;
+    for (int j=i+1; j<=size; j++)
+    {
+        fout << left << setw(10) << j << oldRecords[j-1] << endl;
+    }
+
+    fin.close();
+    fout.close();
 }

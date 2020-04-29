@@ -28,8 +28,19 @@
 #define WIDTH 51
 #define HEIGHT 11
 
-const int LIST_LENGTH = 10;
-const std::string word_list[LIST_LENGTH] = {"engineering", "hangman", "brainstorm", "random", "envelope", "interface", "iceberg", "humour", "lemon", "commander"};
+const int LIST_LENGTH = 100;
+const std::string word_list[LIST_LENGTH] = {
+    "panda", "shirt", "sorry", "drink", "white", "zero", "lemon", "result", "humor", "sleepy",
+    "police", "shower", "morning", "summer", "teacher", "mobile", "society", "pardon", "flower", "culture",
+    "umbrella", "window", "yesterday", "kitchen", "theater", "pancake", "sandwich", "bamboo", "random", "discuss",
+    "birthday", "engineering", "expensive", "headache", "history", "introduce", "newspaper", "strawberry", "vegetable", "watermelon",
+    "activity", "achieve", "apology", "jewelry", "laundry", "forgive", "festival", "neighbor", "between", "calculate",
+    "abnormal", "abundant", "adjustment", "bridegroom", "bungalow", "communicate", "information", "keyboard", "envelope", "interface",
+    "circumstance", "coincidence", "compulsory", "deliberate", "earthquake", "kindergarten", "literature", "brainstorm", "commander", "phenomena",
+    "formula", "graduate", "heritage", "fortunate", "balcony", "standard", "feedback", "dwelling", "estimate", "innocent",
+    "advertisement", "approximate", "emergency", "individual", "instrument", "percentage", "represent", "scholarship", "convention", "significant",
+    "acquaintance", "atmosphere", "congratulate", "paramount", "hurricane", "incredible", "architecture", "deficiency", "transaction", "distinguish", 
+};
 
 class Fall
 {
@@ -136,7 +147,7 @@ public:
     int countdown;
     Timer()
     {
-        this->countdown = 10;
+        this->countdown = 50;
     };
     void print()
     {
