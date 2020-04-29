@@ -24,6 +24,14 @@
 #define KEYBOARD_H_EXTERN extern
 #endif
 
+#define ERR -1
+#define ENTER 0
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
+
 void setBufferedInput(bool enable);
+int getkey();
 
 #endif // __KEYBOARD_H__

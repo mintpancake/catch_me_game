@@ -136,7 +136,7 @@ public:
     int countdown;
     Timer()
     {
-        this->countdown = 3;
+        this->countdown = 10;
     };
     void print()
     {

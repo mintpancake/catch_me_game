@@ -34,12 +34,7 @@
 #include "main.h"
 #include "welcome.h"
 
-#ifdef LINUX
 #include "keyboard.h"
-#else
-#include <windows.h>
-#include <conio.h>
-#endif
 
 using namespace std;
 
@@ -57,9 +52,6 @@ int main()
 
     //welcome();
 
-#ifdef LINUX
-    setBufferedInput(false);
-#endif
     destroy();
     init();
     thread t_game(game);
@@ -71,16 +63,13 @@ int main()
     thread t_timer(tick);
     t_timer.join();
 
-#ifdef LINUX
-    setBufferedInput(true);
-    std::system("echo -e \"\\n\"");
-#endif
-
     if (status->won)
     {
         cout << "Congratulations! You won!" << endl;
         cout << "The word is \"" << word->target << "\". " << endl;
         cout << "You remaining time is " << timer->countdown << " seconds. " << endl;
+        int restart;
+        cin >> restart;
     }
     else if (status->time_up || 1)
     {
@@ -94,9 +83,6 @@ int main()
     std::system("pause");
 #endif
     destroy();
-#ifdef LINUX
-    setBufferedInput(true);
-#endif
     return 0;
 }
 
@@ -126,67 +112,29 @@ void game()
 void player()
 {
 #ifdef LINUX
-    int ch1, ch2, ch3;
+    setBufferedInput(false);
+#endif
     while (!status->end)
     {
-        ch1 = -1;
-        ch2 = -1;
-        ch3 = -1;
-        ch1 = getchar();
-        if (ch1 != 27)
-        {
-            goto sleep;
-        }
-        ch2 = getchar();
-        if (ch2 != 91)
-        {
-            goto sleep;
-        }
-        ch3 = getchar();
-        if (ch3 == 68 && player_line->index > 1) //left
+        int key = getkey();
+        if (key == LEFT && player_line->index > 1) //left
         {
             player_line->update(-1);
         }
-        else if (ch3 == 67 && player_line->index < fall->col - 2) //right
+        else if (key == RIGHT && player_line->index < fall->col - 2) //right
         {
             player_line->update(1);
         }
-        print();
-    sleep:
-        ch1 = -1;
-        ch2 = -1;
-        ch3 = -1;
-        this_thread::sleep_for(chrono::milliseconds(20));
-    }
-    return;
-#else
-    int ch1, ch2;
-    while (!status->end)
-    {
-        ch1 = -1;
-        ch2 = -1;
-        if (_kbhit())
+        else
         {
-            ch1 = _getch();
-            if (ch1 != 224)
-            {
-                goto sleep;
-            }
-            ch2 = _getch();
-            if (ch2 == 75 && player_line->index > 1) //left
-            {
-                player_line->update(-1);
-            }
-            else if (ch2 == 77 && player_line->index < fall->col - 2) //right
-            {
-                player_line->update(1);
-            }
-            print();
+            continue;
         }
-    sleep:
+        print();
         this_thread::sleep_for(chrono::milliseconds(20));
     }
-    return;
+#ifdef LINUX
+    setBufferedInput(true);
+    std::system("echo -e \"\\n\"");
 #endif
 }
 

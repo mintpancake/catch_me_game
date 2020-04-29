@@ -25,9 +25,11 @@
 #include <unistd.h>
 
 #include "switch.h"
+#include "keyboard.h"
 
 #ifdef LINUX
 #include <termios.h>
+
 void setBufferedInput(bool enable)
 {
     static bool enabled = true;
@@ -54,6 +56,99 @@ void setBufferedInput(bool enable)
         enabled = false;
     }
 }
+
+int getkey()
+{
+    int ch1 = -1, ch2 = -1, ch3 = -1;
+    ch1 = getchar();
+    if (ch1 == 27)
+    {
+        ch2 = getchar();
+        if (ch2 == 91)
+        {
+            ch3 = getchar();
+            if (ch3 == 65) //up
+            {
+                return UP;
+            }
+            else if (ch3 == 66) //down
+            {
+                return DOWN;
+            }
+            else if (ch3 == 68) //left
+            {
+                return LEFT;
+            }
+            else if (ch3 == 67) //right
+            {
+                return RIGHT;
+            }
+            else
+            {
+                return ERR;
+            }
+        }
+        else
+        {
+            return ERR;
+        }
+    }
+    else if (ch1 == 10) //e
+    {
+        return ENTER;
+    }
+    else
+    {
+        return ERR;
+    }
+    return ERR;
+}
+
 #else
+#include <windows.h>
+#include <conio.h>
+
 void setBufferedInput(bool enable) {}
+
+int getkey()
+{
+    int ch1 = -1, ch2 = -1;
+    if (_kbhit())
+    {
+        ch1 = _getch();
+        if (ch1 == 224)
+        {
+            ch2 = _getch();
+            if (ch2 == 72) //up
+            {
+                return UP;
+            }
+            else if (ch2 == 80) //down
+            {
+                return DOWN;
+            }
+            else if (ch2 == 75) //left
+            {
+                return LEFT;
+            }
+            else if (ch2 == 77) //right
+            {
+                return RIGHT;
+            }
+            else
+            {
+                return ERR;
+            }
+        }
+        else if (ch1 == 101) //enter
+        {
+            return ENTER;
+        }
+        else
+        {
+            return ERR;
+        }
+    }
+    return ERR;
+}
 #endif

@@ -66,11 +66,11 @@ int menu()
             if (ch2 == 91)
             {
                 ch3 = getchar();
-                if (ch3 == 65 && now_at > 0) //left
+                if (ch3 == 65 && now_at > 0) //up
                 {
                     now_at--;
                 }
-                else if (ch3 == 66 && now_at < 4) //right
+                else if (ch3 == 66 && now_at < 4) //down
                 {
                     now_at++;
                 }
