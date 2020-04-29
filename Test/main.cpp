@@ -92,7 +92,11 @@ int main()
                         std::cout << "Your great performance is recorded in the leaderboard!" << endl;
                         record(playerName, timer->countdown);
                         std::cout << endl;
+#ifdef LINUX
+                        std::cout << "Back to menu? (double tap q)" << endl;
+#else
                         std::cout << "Back to menu? (q)" << endl;
+#endif
                         int key = getkey();
                         while (key != QUIT)
                         {
@@ -105,8 +109,12 @@ int main()
                     {
                         std::cout << "Please prepare for the next level, " << playerName << "!" << endl;
                         std::cout << endl;
-                        std::cout << "Ready? (y)" << endl;
-                        int key = getkey();
+#ifdef LINUX
+                        std::cout << "Back to menu? (double tap y)" << endl;
+#else
+                        std::cout << "Back to menu? (y)" << endl;
+#endif
+                        int key = ERR;
                         while (key != YES)
                         {
                             key = getkey();
@@ -147,8 +155,12 @@ int main()
                     std::cout << "Your performance is recorded in the leaderboard!" << endl;
                     record(playerName, timer->countdown);
                     std::cout << endl;
+#ifdef LINUX
+                    std::cout << "Back to menu? (double tap q)" << endl;
+#else
                     std::cout << "Back to menu? (q)" << endl;
-                    int key = getkey();
+#endif
+                    int key = ERR;
                     while (key != QUIT)
                     {
                         key = getkey();
