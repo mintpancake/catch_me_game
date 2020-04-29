@@ -35,23 +35,26 @@ If time runs out before the word is filled, the game is over directly.
 If a player passes all ten levels, he/she could be credited to the leaderboard. The player with more time left will get a higher ranking.
 ***
 ## Planned Functions
-- `#include game_app.h` //include macro definitions and function declarations stored in game_app.h ***5.Program codes in multiple files*** 
-- `void game();` //update all kinds of data and output them to the screen
-- `void player();` //get the operation of the player as input
-- `void init();` //initialize all kinds of data
-   - `void init_player_line(string &);`
-   - `void init_vector(vector<string> *, int);` ***2.Data structures for storing game status***
-   - `void init_word();` ***1.Generation of random game sets or events***
-   - `void init_countdown(int);`
-- `bool update();` //judge whether the player has caught the right letter
-- `void update_player_line(int);` //move the basket according to the player's operation
-- `void update_vector(vector<string> *);` //update the letters falling from the top of the screen ***3.Dynamic memory management***
-- `char update_word(char);` //update the word by revealing the hidden letter if the player has caught the right one
-- `void update_countdown(int &);` //show the passage of time
-- `void print();` //display all updated data
-   - `void print_vector(vector<string> v, int l);`
-   - `void print_player_line();`
-   - `void print_word(vector<string> , int);`
-   - `void print_countdown(int &);`
-- `void judge();` //judge whether the player has passes the game
-- `void record(string, int);` // record the performance of the player ***4.File input/output***
+### 1. Preparation
+- include macro definitions and function declarations stored in game_app.h ***5.Program codes in multiple files*** 
+
+### 2. Initialization
+- Output the greeting words and the menu to the screen
+- Get the commands of the player as input
+- Initialize all kinds of data
+   - Initialize the basket which is controlled by the player
+   - Initialize the letters falling from the top of the screen ***2.Data structures for storing game status***
+   - Initialize the hidden words for this level ***1.Generation of random game sets or events***
+   - Initialize the countdown for this level
+
+### 3. Process with judgement and update
+- Move the basket according to the player's operation
+- Judge whether the player has caught the right letter
+- Update the letters falling from the top of the screen ***3.Dynamic memory management***
+- Update the word by revealing the hidden letter if the player has caught the right one
+- Show the passage of time
+- Display all updated data
+- Judge whether the player has passes the game
+
+### 4. Record of result
+- Record the performance of the player ***4.File input/output***
