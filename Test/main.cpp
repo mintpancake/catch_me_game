@@ -151,7 +151,6 @@ void player()
 
 void tick()
 {
-    static int period = 1000;
     while (!status->end)
     {
         if (timer->countdown > 0)
@@ -162,7 +161,7 @@ void tick()
         {
             status->time_up = true;
         }
-        this_thread::sleep_for(chrono::milliseconds(period));
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
 }
 
