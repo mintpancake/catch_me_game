@@ -93,7 +93,7 @@ int getkey()
             return ERR;
         }
     }
-    else if (ch1 == 10) //e
+    else if (ch1 == 10) //enter
     {
         return ENTER;
     }
@@ -140,7 +140,7 @@ int getkey()
                 return ERR;
             }
         }
-        else if (ch1 == 101) //enter
+        else if (ch1 == 13) //enter
         {
             return ENTER;
         }

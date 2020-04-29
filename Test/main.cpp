@@ -33,7 +33,7 @@
 #include "switch.h"
 #include "main.h"
 #include "welcome.h"
-
+#include "menu.h"
 #include "keyboard.h"
 
 using namespace std;
@@ -51,38 +51,48 @@ int main()
     cin >> start;
 
     //welcome();
+    while (1)
+    {
+        int choice = menu();
+        if (choice == 0)
+        {
+            destroy();
+            init();
+            thread t_game(game);
+            t_game.detach();
 
+            thread t_player(player);
+            t_player.detach();
+
+            thread t_timer(tick);
+            t_timer.join();
+
+            if (status->won)
+            {
+                cout << "Congratulations! You won!" << endl;
+                cout << "The word is \"" << word->target << "\". " << endl;
+                cout << "You remaining time is " << timer->countdown << " seconds. " << endl;
+                int restart;
+                cin >> restart;
+            }
+            else if (status->time_up || 1)
+            {
+                cout << "Sorry! Time's up!" << endl;
+                cout << "The word is \"" << word->target << "\". " << endl;
+                int restart;
+                cin >> restart;
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
+    
     destroy();
-    init();
-    thread t_game(game);
-    t_game.detach();
-
-    thread t_player(player);
-    t_player.detach();
-
-    thread t_timer(tick);
-    t_timer.join();
-
-    if (status->won)
-    {
-        cout << "Congratulations! You won!" << endl;
-        cout << "The word is \"" << word->target << "\". " << endl;
-        cout << "You remaining time is " << timer->countdown << " seconds. " << endl;
-        int restart;
-        cin >> restart;
-    }
-    else if (status->time_up || 1)
-    {
-        cout << "Sorry! Time's up!" << endl;
-        cout << "The word is \"" << word->target << "\". " << endl;
-        int restart;
-        cin >> restart;
-    }
-
 #ifndef LINUX
     std::system("pause");
 #endif
-    destroy();
     return 0;
 }
 
@@ -127,14 +137,15 @@ void player()
         }
         else
         {
+            this_thread::sleep_for(chrono::milliseconds(100));
             continue;
         }
         print();
-        this_thread::sleep_for(chrono::milliseconds(20));
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
 #ifdef LINUX
     setBufferedInput(true);
-    std::system("echo -e \"\\n\"");
+    //std::system("echo -e \"\\n\"");
 #endif
 }
 
