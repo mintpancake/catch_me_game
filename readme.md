@@ -32,7 +32,7 @@ If the player fills the word within the given time, he/she can challenge the nex
 
 If time runs out before the word is filled, the game is over directly. 
 ### Ranking Method
-If a player passes all ten levels, he/she could be credited to the leaderboard. The player with more time left will get a higher ranking.
+After the game, the player will be credited to the leaderboard. The player who passes more levels with more time left will get a higher ranking.
 ***
 ## Planned Functions
 ### 1. Preparation
