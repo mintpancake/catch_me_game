@@ -153,7 +153,7 @@ int main()
                     }
 
                     std::cout << "Your performance has been recorded in the leaderboard!" << endl;
-                    record(playerName, timer->countdown);
+                    record(playerName, level, timer->countdown);
                     std::cout << endl;
 #ifdef LINUX
                     std::cout << "Back to menu? (double tap q)" << endl;
@@ -211,7 +211,7 @@ int main()
             }
             continue;
         }
-        else if (choice == 2)
+        else if (choice == 2) //show leaderboard
         {
 #ifdef LINUX
             std::system("clear");
@@ -219,6 +219,25 @@ int main()
             std::system("cls");
 #endif
             //to be implemented
+            std::cout << left << setw(10) << "No." << setw(10) << "Name" << setw(10) << "Level" << setw(10) << "Time" << endl;
+            ifstream fin_to_show;
+            string s1;
+            int order=1;
+            fin_to_show.open("leaderboard.txt");
+            if ( fin_to_show.fail() ) 
+            {
+                cout << "                   None" << endl;
+            }
+            else 
+            {
+                while (getline(fin_to_show, s1))
+                    {
+                    std::cout << left << setw(10) << order;
+                    std::cout << s1 << endl;
+                    order++;
+                    }
+
+            }
             std::cout << endl;
             std::cout << "Back to menu? (q)" << endl;
             int key = getkey();
@@ -494,40 +513,47 @@ void destroy()
     }
 }
 
-void record(string playerName, int time)
+void record(string playerName, int level, int time)
 {
     vector<string> oldRecords;
     string s;
     ifstream fin;
-    fin.open("leaderboard.txt");
-    while (getline(fin, s))
-    {
-        oldRecords.push_back(s.substr(10));
-    }
     int size = oldRecords.size();
     int i = 0;
-    while (i < size)
+    fin.open("leaderboard.txt");
+    if ( fin_to_show.fail() ) 
+        {
+        }
+    else
     {
-        if (atoi(oldRecords[i].substr(10).c_str()) >= time)
+        while (getline(fin, s))
         {
-            continue;
+            oldRecords.push_back(s);
         }
-        else
+
+        while (i < size)
         {
-            break;
+            if (atoi(oldRecords[i].substr(10,10).c_str()) >= time && atoi(oldRecords[i].substr(20,10).c_str()) >= time)
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+            i++;
         }
-        i++;
     }
     ofstream fout;
     fout.open("leaderboard.txt");
     for (int j = 0; j < i; j++)
     {
-        fout << left << setw(10) << j << oldRecords[j] << endl;
+        fout << oldRecords[j] << endl;
     }
-    fout << left << setw(10) << i << setw(10) << playerName << setw(10) << time << endl;
+    fout << setw(10) << playerName << setw(10) << level << setw(10) << time << endl;
     for (int j = i + 1; j <= size; j++)
     {
-        fout << left << setw(10) << j << oldRecords[j - 1] << endl;
+        fout << oldRecords[j - 1] << endl;
     }
 
     fin.close();
