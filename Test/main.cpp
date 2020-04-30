@@ -46,8 +46,8 @@ Player_line *player_line = new Player_line{"", 25};
 Fall *fall = new Fall(WIDTH, HEIGHT - 1);
 Timer *timer = new Timer(100);
 Status *status = new Status();
-int level = 1;
-int leftTime = 0;
+int level;
+int leftTime;
 string playerName;
 
 int main()
@@ -65,7 +65,8 @@ int main()
 #endif
         int choice = menu();
         if (choice == 0)
-        {   level=1;
+        {
+            level=1;
             leftTime=0;
             while (level <= 10)
             {
@@ -112,9 +113,9 @@ int main()
                         std::cout << "Please prepare for the next level, " << playerName << "!" << endl;
                         std::cout << endl;
 #ifdef LINUX
-                        std::cout << "Back to menu? (double tap y)" << endl;
+                        std::cout << "Ready? (double tap y)" << endl;
 #else
-                        std::cout << "Back to menu? (y)" << endl;
+                        std::cout << "Ready? (y)" << endl;
 #endif
                         int key = ERR;
                         while (key != YES)
@@ -378,8 +379,14 @@ void init()
     while (index_of_reveal.size() < num_of_reveal)
     {
         int random_choice = rand()%word->target.length();
-        vector<int>::iterator it = find(index_of_reveal.begin(), index_of_reveal.end(), random_choice);
-        if (it != index_of_reveal.end())
+        bool exist = false;
+        for (int i=0; i<index_of_reveal.size(); i++){
+            if (random_choice == index_of_reveal[i])
+            {
+                exist = true;
+            }
+        }
+        if ( !exist)
         {
             index_of_reveal.push_back(random_choice);
         }
@@ -566,7 +573,14 @@ void record(string playerName, int level, int time)
     {
         fout << oldRecords[j] << endl;
     }
-    fout << left << setw(10) << playerName << setw(10) << level << setw(10) << time << endl;
+    if (time < 0 )
+    {
+        fout << left << setw(10) << playerName << setw(10) << level << setw(10) << 0 << endl;
+    }
+    else
+    {
+        fout << left << setw(10) << playerName << setw(10) << level << setw(10) << time << endl;
+    }
     for (int j = i + 1; j <= size; j++)
     {
         fout << oldRecords[j - 1] << endl;
