@@ -8,15 +8,15 @@ Chen Xueqing        3035638351
 ***
 ## How to Use
 - For Windows
-   1. Go to `game_app.h`
+   1. Go to `switch.h`
    2. Undefine `LINUX`
-   3. Compile using `g++ -pedantic-errors -std=c++11 game_app.cpp -o game_app.exe`
-   4. Run `game_app.exe`
+   3. Compile using `g++ -pedantic-errors -std=c++11 welcome.cpp keyboard.cpp menu.cpp main.cpp -o main.exe`
+   4. Run `main.exe`
 - For Linux
-   1. Go to `game_app.h`
+   1. Go to `switch.h`
    2. Define `LINUX`
-   3. Compile using `g++ -pedantic-errors -std=c++11 game_app.cpp -o game_app -lpthread`
-   4. Run `game_app`
+   3. Use command `make main`<br />or Compile using `g++ -pedantic-errors -std=c++11 welcome.cpp keyboard.cpp menu.cpp main.cpp -o main -lpthread`
+   4. Run `main`
 - For Mac OS
    - Oops! We don't support that. 
 ***
