@@ -128,9 +128,9 @@ int main()
                 else if (status->time_up)
                 {
                     std::cout << endl;
-                    std::cout << "Sorry! Time's up!" << endl;
+                    std::cout << "Oops! Time's up!" << endl;
                     std::cout << "The word is \"" << word->target << "\". " << endl;
-                    std::cout << "Your level is " << level << ". " << endl;
+                    std::cout << "Your current level is " << level << ". " << endl;
                     std::cout << endl;
                     if (level == 1 || level == 2 || level == 3)
                     {
@@ -152,7 +152,7 @@ int main()
                             << "Excellent! You are only one step away from success, " << playerName << "." << endl;
                     }
 
-                    std::cout << "Your performance is recorded in the leaderboard!" << endl;
+                    std::cout << "Your performance has been recorded in the leaderboard!" << endl;
                     record(playerName, timer->countdown);
                     std::cout << endl;
 #ifdef LINUX
@@ -170,7 +170,7 @@ int main()
                 }
             }
         }
-        else if (choice == 1)
+        else if (choice == 1) //instructions
         {
 #ifdef LINUX
             std::system("clear");
@@ -178,6 +178,29 @@ int main()
             std::system("cls");
 #endif
             //to be implemented
+            std::cout << "At  first,  you  will  get an incomplete word with" << endl;
+            std::cout << "only  part  of its letters displayed, other hidden" << endl;
+            std::cout << "letters will be displayed as short dashes."
+            std::cout << endl;
+            std::cout << "You  need to use a basket to catch letters falling" << endl;
+            std::cout << "from the top of the screen within a given time." <<endl;
+            std::cout << endl;
+            std::cout << "If  you catch the right letter, the letter will be" << endl;
+            std::cout << "revealed  by  replacing the corresponding dash." << endl;
+            std::cout << "If  you catch the wrong letter, the left time will" << endl;
+            std::cout << "be reduced." << endl;
+            std::cout << endl;
+            std::cout << "If  you  fill  the word within the given time, you" << endl;
+            std::cout << "can  challenge  the  next level, and the left time" << endl;
+            std::cout << "will be added to the countdown of the next level." <<endl;
+            std::cout << "If  time  runs  out before the word is filled, the" << endl;
+            std::cout << "game will be over directly." << endl;
+            std::cout << endl;
+            std::cout << "After  the  game,  you  will  be  credited  to the" << endl;
+            std::cout << "leaderboard.  The  player  who  passes more levels" << endl;
+            std::cout << "with more time left will get a higher ranking." << endl;
+            std::cout << endl;
+            std::cout << "Good luck, " << playerName << endl;
             std::cout << endl;
             std::cout << "Back to menu? (q)" << endl;
             int key = getkey();
