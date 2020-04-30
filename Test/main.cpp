@@ -180,7 +180,7 @@ int main()
             //to be implemented
             std::cout << "At  first,  you  will  get an incomplete word with" << endl;
             std::cout << "only  part  of its letters displayed, other hidden" << endl;
-            std::cout << "letters will be displayed as short dashes."
+            std::cout << "letters will be displayed as short dashes." << endl;
             std::cout << endl;
             std::cout << "You  need to use a basket to catch letters falling" << endl;
             std::cout << "from the top of the screen within a given time." <<endl;
@@ -517,7 +517,7 @@ void record(string playerName, int level, int time)
 {
     vector<string> oldRecords;
     string s;
-    ifstream fin;
+    ifstream fin_to_show;
     int size = oldRecords.size();
     int i = 0;
     fin.open("leaderboard.txt");

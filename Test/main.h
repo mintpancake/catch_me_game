@@ -298,6 +298,6 @@ int update_word(char c);
 void update();
 void judge();
 void destroy();
-void record(std::string playerName, int time);
+void record(std::string playerName, int level, int time);
 
 #endif // __MAIN_H__
