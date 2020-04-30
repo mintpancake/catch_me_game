@@ -35,7 +35,7 @@
 
 using namespace std;
 
-const string options[6] = {"Start", "Instructions", "Show Leaderboard", "About", "Quit", "[up/down to select | e to enter]"};
+const string options[6] = {"Start", "Instruction", "Leaderboard", "About", "Quit", "[up/down to select | e to enter]"};
 
 void print_option(string str, bool at)
 {

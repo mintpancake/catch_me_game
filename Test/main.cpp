@@ -31,6 +31,7 @@
 #include <cstdint>
 #include <csignal>
 #include <unistd.h>
+#include <algorithm>
 
 #include "switch.h"
 #include "main.h"
@@ -64,7 +65,8 @@ int main()
 #endif
         int choice = menu();
         if (choice == 0)
-        {
+        {   level=1;
+            leftTime=0;
             while (level <= 10)
             {
                 destroy();
@@ -84,13 +86,13 @@ int main()
                     std::cout << "Congratulations! You guessed right!" << endl;
                     std::cout << "The word is \"" << word->target << "\". " << endl;
                     std::cout << "Your remaining time is " << timer->countdown << " second(s). " << endl;
-                    std::cout << "Your level is " << level << ". " << endl;
+                    std::cout << "Your current level is " << level << ". " << endl;
                     std::cout << endl;
                     if (level == 10)
                     {
                         std::cout << "Unbelievable! You did it, " << playerName << "!" << endl;
                         std::cout << "Your great performance is recorded in the leaderboard!" << endl;
-                        record(playerName, timer->countdown);
+                        record(playerName, level, timer->countdown);
                         std::cout << endl;
 #ifdef LINUX
                         std::cout << "Back to menu? (double tap q)" << endl;
@@ -130,7 +132,7 @@ int main()
                     std::cout << endl;
                     std::cout << "Oops! Time's up!" << endl;
                     std::cout << "The word is \"" << word->target << "\". " << endl;
-                    std::cout << "Your current level is " << level << ". " << endl;
+                    std::cout << "Your final level is " << level << ". " << endl;
                     std::cout << endl;
                     if (level == 1 || level == 2 || level == 3)
                     {
@@ -200,7 +202,7 @@ int main()
             std::cout << "leaderboard.  The  player  who  passes more levels" << endl;
             std::cout << "with more time left will get a higher ranking." << endl;
             std::cout << endl;
-            std::cout << "Good luck, " << playerName << endl;
+            std::cout << "Good luck, " << playerName << "!" << endl;
             std::cout << endl;
             std::cout << "Back to menu? (q)" << endl;
             int key = getkey();
@@ -226,7 +228,7 @@ int main()
             fin_to_show.open("leaderboard.txt");
             if ( fin_to_show.fail() ) 
             {
-                cout << "                   None" << endl;
+                cout << "---------------None---------------" << endl;
             }
             else 
             {
@@ -371,7 +373,21 @@ void init()
     {
         word->init(word_list[(rand() % 10) + (level - 1) * 10]);
     }
-    word->reveal((word->target)[rand() % (word->target).length()]);
+    int num_of_reveal = word->target.length()/3;
+    vector<int> index_of_reveal;
+    while (index_of_reveal.size() < num_of_reveal)
+    {
+        int random_choice = rand()%word->target.length();
+        vector<int>::iterator it = find(index_of_reveal.begin(), index_of_reveal.end(), random_choice);
+        if (it != index_of_reveal.end())
+        {
+            index_of_reveal.push_back(random_choice);
+        }
+    }
+    for (int i=0; i<index_of_reveal.size(); i++)
+    {
+        word->reveal((word->target)[index_of_reveal[i]]);
+    }
     player_line->init(fall->col);
 }
 
@@ -517,11 +533,11 @@ void record(string playerName, int level, int time)
 {
     vector<string> oldRecords;
     string s;
-    ifstream fin_to_show;
+    ifstream fin;
     int size = oldRecords.size();
     int i = 0;
     fin.open("leaderboard.txt");
-    if ( fin_to_show.fail() ) 
+    if ( fin.fail() ) 
         {
         }
     else
@@ -550,7 +566,7 @@ void record(string playerName, int level, int time)
     {
         fout << oldRecords[j] << endl;
     }
-    fout << setw(10) << playerName << setw(10) << level << setw(10) << time << endl;
+    fout << left << setw(10) << playerName << setw(10) << level << setw(10) << time << endl;
     for (int j = i + 1; j <= size; j++)
     {
         fout << oldRecords[j - 1] << endl;

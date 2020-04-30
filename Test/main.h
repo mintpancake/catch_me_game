@@ -36,7 +36,7 @@ const int LIST_LENGTH = 100;
 const std::string word_list[LIST_LENGTH] = {
     "panda",
     "shirt",
-    "sorry",
+    "candy",
     "drink",
     "white",
     "zero",
