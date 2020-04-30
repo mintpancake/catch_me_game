@@ -20,6 +20,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <thread>
 #include <chrono>
 #include <future>
@@ -31,7 +32,6 @@
 #include <cstdint>
 #include <csignal>
 #include <unistd.h>
-#include <algorithm>
 
 #include "switch.h"
 #include "main.h"
@@ -41,11 +41,11 @@
 
 using namespace std;
 
-Word *word = new Word{0, "", ""};
-Player_line *player_line = new Player_line{"", 25};
-Fall *fall = new Fall(WIDTH, HEIGHT - 1);
-Timer *timer = new Timer(100);
-Status *status = new Status();
+Word *word = NULL;
+Player_line *player_line = NULL;
+Fall *fall = NULL;
+Timer *timer = NULL;
+Status *status = NULL;
 int level;
 int leftTime;
 string playerName;
@@ -66,8 +66,8 @@ int main()
         int choice = menu();
         if (choice == 0)
         {
-            level=1;
-            leftTime=0;
+            level = 1;
+            leftTime = 0;
             while (level <= 10)
             {
                 destroy();
@@ -173,20 +173,19 @@ int main()
                 }
             }
         }
-        else if (choice == 1) //instructions
+        else if (choice == 1) //instruction
         {
 #ifdef LINUX
             std::system("clear");
 #else
             std::system("cls");
 #endif
-            //to be implemented
             std::cout << "At  first,  you  will  get an incomplete word with" << endl;
             std::cout << "only  part  of its letters displayed, other hidden" << endl;
             std::cout << "letters will be displayed as short dashes." << endl;
             std::cout << endl;
             std::cout << "You  need to use a basket to catch letters falling" << endl;
-            std::cout << "from the top of the screen within a given time." <<endl;
+            std::cout << "from the top of the screen within a given time." << endl;
             std::cout << endl;
             std::cout << "If  you catch the right letter, the letter will be" << endl;
             std::cout << "revealed  by  replacing the corresponding dash." << endl;
@@ -195,7 +194,7 @@ int main()
             std::cout << endl;
             std::cout << "If  you  fill  the word within the given time, you" << endl;
             std::cout << "can  challenge  the  next level, and the left time" << endl;
-            std::cout << "will be added to the countdown of the next level." <<endl;
+            std::cout << "will be added to the countdown of the next level." << endl;
             std::cout << "If  time  runs  out before the word is filled, the" << endl;
             std::cout << "game will be over directly." << endl;
             std::cout << endl;
@@ -221,26 +220,25 @@ int main()
 #else
             std::system("cls");
 #endif
-            //to be implemented
             std::cout << left << setw(10) << "No." << setw(10) << "Name" << setw(10) << "Level" << setw(10) << "Time" << endl;
             ifstream fin_to_show;
             string s1;
-            int order=1;
+            int order = 1;
             fin_to_show.open("leaderboard.txt");
-            if ( fin_to_show.fail() ) 
+            if (fin_to_show.fail())
             {
                 cout << "---------------None---------------" << endl;
             }
-            else 
+            else
             {
                 while (getline(fin_to_show, s1))
-                    {
+                {
                     std::cout << left << setw(10) << order;
                     std::cout << s1 << endl;
                     order++;
-                    }
-
+                }
             }
+            fin_to_show.close();
             std::cout << endl;
             std::cout << "Back to menu? (q)" << endl;
             int key = getkey();
@@ -366,32 +364,34 @@ void init()
     fall = new Fall(WIDTH, HEIGHT - 1);
     timer = new Timer(100 + leftTime);
     status = new Status();
-    if (playerName == "Debug")
+    if (playerName == "Debug") //cheat
     {
-        word->init("testestest");
+        word->init("testestest", "testestest");
     }
     else
     {
-        word->init(word_list[(rand() % 10) + (level - 1) * 10]);
+        int index = (rand() % 10) + (level - 1) * 10;
+        word->init(word_list[index], tip_list[index]);
     }
-    int num_of_reveal = word->target.length()/3;
+    int num_of_reveal = word->target.length() / 3;
     vector<int> index_of_reveal;
     while (index_of_reveal.size() < num_of_reveal)
     {
-        int random_choice = rand()%word->target.length();
+        int random_choice = rand() % word->target.length();
         bool exist = false;
-        for (int i=0; i<index_of_reveal.size(); i++){
+        for (int i = 0; i < index_of_reveal.size(); i++)
+        {
             if (random_choice == index_of_reveal[i])
             {
                 exist = true;
             }
         }
-        if ( !exist)
+        if (!exist)
         {
             index_of_reveal.push_back(random_choice);
         }
     }
-    for (int i=0; i<index_of_reveal.size(); i++)
+    for (int i = 0; i < index_of_reveal.size(); i++)
     {
         word->reveal((word->target)[index_of_reveal[i]]);
     }
@@ -488,7 +488,14 @@ void update()
     if (left == WRONG || mid == WRONG || right == WRONG)
     {
         player_line->fill_bucket(-1);
-        timer->countdown -= 3;
+        if (timer->countdown - 3 < 0)
+        {
+            timer->countdown = 0;
+        }
+        else
+        {
+            timer->countdown -= 3;
+        }
         timer->deducted = true;
         recover = false;
     }
@@ -541,12 +548,15 @@ void record(string playerName, int level, int time)
     vector<string> oldRecords;
     string s;
     ifstream fin;
-    int size = oldRecords.size();
+    if (time < 0)
+    {
+        time = 0;
+    }
     int i = 0;
     fin.open("leaderboard.txt");
-    if ( fin.fail() ) 
-        {
-        }
+    if (fin.fail())
+    {
+    }
     else
     {
         while (getline(fin, s))
@@ -554,38 +564,50 @@ void record(string playerName, int level, int time)
             oldRecords.push_back(s);
         }
 
-        while (i < size)
+        while (i < oldRecords.size())
         {
-            if (atoi(oldRecords[i].substr(10,10).c_str()) >= time && atoi(oldRecords[i].substr(20,10).c_str()) >= time)
+            if (atoi(oldRecords[i].substr(10, 10).c_str()) >= level && atoi(oldRecords[i].substr(20, 10).c_str()) >= time)
             {
-                continue;
+                if (atoi(oldRecords[i].substr(10, 10).c_str()) == level && atoi(oldRecords[i].substr(20, 10).c_str()) == time && oldRecords[i].substr(0, 10) > playerName)
+                {
+                    break;
+                }
+                else
+                {
+                    i++;
+                }
             }
             else
             {
                 break;
             }
-            i++;
         }
     }
+    fin.close();
     ofstream fout;
     fout.open("leaderboard.txt");
     for (int j = 0; j < i; j++)
     {
         fout << oldRecords[j] << endl;
     }
-    if (time < 0 )
+    if (time == 0)
     {
-        fout << left << setw(10) << playerName << setw(10) << level << setw(10) << 0 << endl;
+        if (level == 10)
+        {
+            fout << left << setw(10) << playerName << setw(10) << level << setw(10) << "0" << endl;
+        }
+        else
+        {
+            fout << left << setw(10) << playerName << setw(10) << level << setw(10) << "-" << endl;
+        }
     }
     else
     {
         fout << left << setw(10) << playerName << setw(10) << level << setw(10) << time << endl;
     }
-    for (int j = i + 1; j <= size; j++)
+    for (int j = i + 1; j <= oldRecords.size(); j++)
     {
         fout << oldRecords[j - 1] << endl;
     }
-
-    fin.close();
     fout.close();
 }

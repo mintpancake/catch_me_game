@@ -145,6 +145,118 @@ const std::string word_list[LIST_LENGTH] = {
     "distinguish",
 };
 
+const std::string tip_list[LIST_LENGTH] = {
+    "panda",
+    "shirt",
+    "candy",
+    "drink",
+    "white",
+    "zero",
+    "lemon",
+    "result",
+    "humor",
+    "sleepy",
+
+    "police",
+    "shower",
+    "morning",
+    "summer",
+    "teacher",
+    "mobile",
+    "society",
+    "pardon",
+    "flower",
+    "culture",
+
+    "umbrella",
+    "window",
+    "yesterday",
+    "kitchen",
+    "theater",
+    "pancake",
+    "sandwich",
+    "bamboo",
+    "random",
+    "discuss",
+
+    "birthday",
+    "engineering",
+    "expensive",
+    "headache",
+    "history",
+    "introduce",
+    "newspaper",
+    "strawberry",
+    "vegetable",
+    "watermelon",
+
+    "activity",
+    "achieve",
+    "apology",
+    "jewelry",
+    "laundry",
+    "forgive",
+    "festival",
+    "neighbor",
+    "between",
+    "calculate",
+
+    "abnormal",
+    "abundant",
+    "adjustment",
+    "bridegroom",
+    "bungalow",
+    "communicate",
+    "information",
+    "keyboard",
+    "envelope",
+    "interface",
+
+    "circumstance",
+    "coincidence",
+    "compulsory",
+    "deliberate",
+    "earthquake",
+    "kindergarten",
+    "literature",
+    "brainstorm",
+    "commander",
+    "phenomena",
+
+    "formula",
+    "graduate",
+    "heritage",
+    "fortunate",
+    "balcony",
+    "standard",
+    "feedback",
+    "dwelling",
+    "estimate",
+    "innocent",
+
+    "advertisement",
+    "approximate",
+    "emergency",
+    "individual",
+    "instrument",
+    "percentage",
+    "represent",
+    "scholarship",
+    "convention",
+    "significant",
+
+    "acquaintance",
+    "atmosphere",
+    "congratulate",
+    "paramount",
+    "hurricane",
+    "incredible",
+    "architecture",
+    "deficiency",
+    "transaction",
+    "distinguish",
+};
+
 class Fall
 {
 public:
@@ -173,11 +285,13 @@ public:
     int length;
     std::string target;
     std::string display;
-    void init(std::string target)
+    std::string tip;
+    void init(std::string target, std::string tip)
     {
         this->target = target;
         this->length = this->target.length();
         this->display = std::string(this->length, '-');
+        this->tip = tip;
     }
     void reveal(char c)
     {
@@ -195,7 +309,7 @@ public:
     }
     void print()
     {
-        std::cout << this->display;
+        std::cout << this->display << " (" << this->tip << ")";
     }
 };
 
