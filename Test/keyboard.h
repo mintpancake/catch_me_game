@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file keyboard.h
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #ifndef __KEYBOARD_H__
 #define __KEYBOARD_H__
 

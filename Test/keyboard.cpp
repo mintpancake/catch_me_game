@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file keyboard.cpp
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
@@ -30,6 +36,11 @@
 #ifdef LINUX
 #include <termios.h>
 
+/**
+  * @brief  change the input mode for Linux Shell
+  * @param  enable whether the input of Shell need to be buffered
+  * @retval void
+  */
 void setBufferedInput(bool enable)
 {
     static bool enabled = true;
@@ -57,6 +68,11 @@ void setBufferedInput(bool enable)
     }
 }
 
+/**
+  * @brief  get which key is being pressed for Linux
+  * @param  void
+  * @retval void
+  */
 int getkey()
 {
     int ch1 = -1, ch2 = -1, ch3 = -1;
@@ -120,8 +136,18 @@ int getkey()
 #include <windows.h>
 #include <conio.h>
 
+/**
+  * @brief  no function for Windows
+  * @param  enable no function for Windows
+  * @retval void
+  */
 void setBufferedInput(bool enable) {}
 
+/**
+  * @brief  get which key is being pressed for Windows
+  * @param  void
+  * @retval void
+  */
 int getkey()
 {
     int ch1 = -1, ch2 = -1;

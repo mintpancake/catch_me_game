@@ -1,3 +1,26 @@
+/****************************************************************************
+ *  Copyright (C) 2020 Lu Meng and Chen Xueqing.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ ***************************************************************************/
+
+/** @file welcome.cpp
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #include <iostream>
 #include <string>
 #include <thread>
@@ -31,6 +54,11 @@ const std::string disappear[8] = {" @@@@@@@  @@@@@@  @@@@@@@  @@@@@@@ @@@  @@@  
                                   " : :: ::  : ! !:  : !  :!  !:  :   ::!  : :      !:: :  :::  ! :  ::!\n:             :     ::               :               :   :     :     \n                                                                     \n                                                                     \n                                                                     ",
                                   " :    :!  :       :     !:      :    :     :     :   :         :  : !\n                                                                     \n                                                                     \n                                                                     \n                                                                     "};
 
+/**
+  * @brief  print the welcome animation
+  * @param  void
+  * @retval void
+  */
 void welcome()
 {
     bool *complete = new bool[8]();
@@ -65,6 +93,7 @@ void welcome()
         this_thread::sleep_for(chrono::milliseconds(200));
     }
     delete complete;
+    complete = NULL;
     this_thread::sleep_for(chrono::milliseconds(1000));
     for (int i = 0; i < 8; i++)
     {

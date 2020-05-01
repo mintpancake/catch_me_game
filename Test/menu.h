@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file menu.h
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #ifndef __MENU_H__
 #define __MENU_H__
 

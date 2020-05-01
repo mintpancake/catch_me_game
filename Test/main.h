@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file main.h
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
@@ -263,6 +269,12 @@ public:
     std::vector<std::string> display;
     int col; //only odd number
     int row;
+
+/**
+  * @brief  set Fall's col and row and fill display with blanks
+  * @param  col colomns of Fall
+  *         row rows of Fall
+  */
     Fall(int col, int row)
     {
         this->col = col;
@@ -272,6 +284,12 @@ public:
             (this->display).push_back(std::string(col, ' '));
         }
     }
+
+/**
+  * @brief  put a string in the begin of display and erase the last string
+  * @param  str the input string
+  * @retval void
+  */
     void push(std::string str)
     {
         (this->display).erase((this->display).begin());
@@ -286,6 +304,13 @@ public:
     std::string target;
     std::string display;
     std::string tip;
+
+/**
+  * @brief  initialize length, target, display, tip of Word using target and tip given
+  * @param  target the target word
+  *         tip the tip for target word
+  * @retval void
+  */
     void init(std::string target, std::string tip)
     {
         this->target = target;
@@ -293,6 +318,12 @@ public:
         this->display = std::string(this->length, '-');
         this->tip = tip;
     }
+
+/**
+  * @brief  reveal every appearance of a character in display according to its position in target
+  * @param  c the charater needed to be revealed
+  * @retval void
+  */
     void reveal(char c)
     {
         int last_pos = (this->target).find(c);
@@ -307,6 +338,12 @@ public:
             last_pos = pos;
         }
     }
+
+/**
+  * @brief  print the display and tip
+  * @param  void
+  * @retval void
+  */
     void print()
     {
         std::cout << this->display << " (" << this->tip << ")";
@@ -318,10 +355,22 @@ class Player_line
 public:
     std::string display;
     int index;
+
+/**
+  * @brief  initialize the display of Player_line with a basket in the middle
+  * @param  length the length of the Player_line
+  * @retval void
+  */
     void init(int length)
     {
         this->display = std::string((length - 3) / 2, ' ') + "\\_/" + std::string((length - 3) / 2, ' ');
     }
+
+/**
+  * @brief  fill basket with "o" if catch right, with "x" if catch wrong or restore otherwise
+  * @param  m how to fill, 1 is right, -1 is wrong, 0 to restore
+  * @retval void
+  */
     void fill_bucket(int m)
     {
         if (m == 1)
@@ -350,6 +399,12 @@ public:
             }
         }
     }
+
+/**
+  * @brief  move the basket left or right
+  * @param  dir -1 left, 1 right
+  * @retval void
+  */
     void update(int dir)
     {
         if (dir == -1)
@@ -363,6 +418,12 @@ public:
             this->index++;
         }
     }
+
+/**
+  * @brief  print the Player_line
+  * @param  void
+  * @retval void
+  */
     void print()
     {
         std::cout << this->display;
@@ -374,11 +435,21 @@ class Timer
 public:
     int countdown;
     bool deducted;
+/**
+  * @brief  initialize countdown with the given time and deducted with false
+  * @param  countdown intial countdown
+  */
     Timer(int countdown)
     {
         this->countdown = countdown;
         this->deducted = false;
     };
+
+/**
+  * @brief  print the countdown
+  * @param  void
+  * @retval void
+  */
     void print()
     {
         std::cout << "COUNTDOWN: " << this->countdown;
@@ -391,6 +462,11 @@ public:
     bool won;
     bool end;
     bool time_up;
+
+/**
+  * @brief  initialize Status to be all false
+  * @param  void
+  */
     Status()
     {
         this->won = false;

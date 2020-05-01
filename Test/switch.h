@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file switch.h
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #ifndef __SWITCH_H__
 #define __SWITCH_H__
 

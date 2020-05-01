@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file main.cpp
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -302,6 +308,11 @@ int main()
     return 0;
 }
 
+/**
+  * @brief  a thread to execute game
+  * @param  void
+  * @retval void
+  */
 void game()
 {
     srand(time(NULL));
@@ -316,6 +327,11 @@ void game()
     return;
 }
 
+/**
+  * @brief  a thread to handle input from player
+  * @param  void
+  * @retval void
+  */
 void player()
 {
     while (!status->end)
@@ -339,6 +355,11 @@ void player()
     }
 }
 
+/**
+  * @brief  a thread to count time
+  * @param  void
+  * @retval void
+  */
 void tick()
 {
     while (!status->end)
@@ -355,6 +376,11 @@ void tick()
     }
 }
 
+/**
+  * @brief  initialize game parameters
+  * @param  void
+  * @retval void
+  */
 void init()
 {
     destroy();
@@ -398,6 +424,11 @@ void init()
     player_line->init(fall->col);
 }
 
+/**
+  * @brief  generate a random line of characters for fall
+  * @param  l the length of line
+  * @retval the string of the line
+  */
 string rand_str(int l)
 {
     string s;
@@ -418,6 +449,11 @@ string rand_str(int l)
     return s;
 }
 
+/**
+  * @brief  print the fall
+  * @param  void
+  * @retval void
+  */
 void print()
 {
 #ifdef LINUX
@@ -457,6 +493,13 @@ void print()
     std::cout << endl;
 }
 
+/**
+  * @brief  judge whether a character is in the target word or whether it is a space
+  * @param  c the input character
+  * @retval RIGHT in the target word
+  *         WRONG not in the target word
+  *         BLANK a space
+  */
 int update_word(char c)
 {
     if (c == ' ')
@@ -474,6 +517,11 @@ int update_word(char c)
     }
 }
 
+/**
+  * @brief  execute countdown deduction and change of basket display according to whether the basket catches a charater
+  * @param  void
+  * @retval void
+  */
 void update()
 {
     bool recover = true;
@@ -505,6 +553,11 @@ void update()
     }
 }
 
+/**
+  * @brief  judge and change game status
+  * @param  void
+  * @retval void
+  */
 void judge()
 {
     status->won = (word->target == word->display);
@@ -514,6 +567,11 @@ void judge()
     }
 }
 
+/**
+  * @brief  free the memory of game parameters
+  * @param  void
+  * @retval void
+  */
 void destroy()
 {
     if (word != NULL)
@@ -543,6 +601,13 @@ void destroy()
     }
 }
 
+/**
+  * @brief  record the player's performance into the leaderboard
+  * @param  playerName the player's name
+  *         level the final level
+  *         time the remaining time
+  * @retval void
+  */
 void record(string playerName, int level, int time)
 {
     vector<string> oldRecords;

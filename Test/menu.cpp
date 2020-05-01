@@ -15,6 +15,12 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
+/** @file menu.cpp
+ *  @version 1.0
+ *  @date May 2018
+ *
+ */
+
 #include <iostream>
 #include <string>
 #include <thread>
@@ -37,6 +43,12 @@ using namespace std;
 
 const string options[6] = {"Start", "Instruction", "Leaderboard", "About", "Quit", "[up/down to select | e to enter]"};
 
+/**
+  * @brief  print one line of option
+  * @param  str the content of the option
+  *         at whether the focus is on this option
+  * @retval void
+  */
 void print_option(string str, bool at)
 {
     char fill = ' ';
@@ -58,6 +70,11 @@ void print_option(string str, bool at)
     cout << string(front_sep, fill) << str << string(back_sep, fill) << endl;
 }
 
+/**
+  * @brief  print the whole menu
+  * @param  now_at which option the focus is on
+  * @retval void
+  */
 void print_menu(int now_at)
 {
 #ifdef LINUX
@@ -73,6 +90,11 @@ void print_menu(int now_at)
     }
 }
 
+/**
+  * @brief  print the menu and get the player's keyboard input
+  * @param  void
+  * @retval the option which the player chooses
+  */
 int menu()
 {
     int now_at = 0;
