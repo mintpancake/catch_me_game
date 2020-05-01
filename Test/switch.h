@@ -30,6 +30,6 @@
 #define SWITCH_H_EXTERN extern
 #endif
 
-//#define LINUX
+#define LINUX
 
 #endif // __SWITCH_H__
