@@ -60,6 +60,8 @@ After the game, the player will be credited to the leaderboard. The player who p
 ### 4. Record of Result
 - Record the performance of the player ***4.File input/output***
 
+***
+
 ## Some Non-standard C/C++ libraries
 -`#include <termios.h>` `#include <unistd.h>` Implement reading keyboard for Limux
 -`include <windows.h>` `#include <conio.h>` Implement reading keyboard for Windows
