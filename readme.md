@@ -37,7 +37,7 @@ After the game, the player will be credited to the leaderboard. The player who p
 ***
 ## Planned Functions
 ### 1. Preparation
-- include macro definitions and function declarations stored in game_app.h ***5.Program codes in multiple files*** 
+- Include macro definitions and function declarations stored in *.h ***5.Program codes in multiple files*** 
 
 ### 2. Initialization
 - Output the greeting words and the menu to the screen
