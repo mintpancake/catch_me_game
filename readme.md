@@ -48,7 +48,7 @@ After the game, the player will be credited to the leaderboard. The player who p
    - Initialize the hidden words for this level ***1.Generation of random game sets or events***
    - Initialize the countdown for this level
 
-### 3. Process with judgement and update
+### 3. Process with Judgement and Update
 - Move the basket according to the player's operation
 - Judge whether the player has caught the right letter
 - Update the letters falling from the top of the screen ***3.Dynamic memory management***
@@ -57,5 +57,9 @@ After the game, the player will be credited to the leaderboard. The player who p
 - Display all updated data
 - Judge whether the player has passes the game
 
-### 4. Record of result
+### 4. Record of Result
 - Record the performance of the player ***4.File input/output***
+
+## Some Non-standard C/C++ libraries
+-`#include <termios.h>` `#include <unistd.h>` Implement reading keyboard for Limux
+-`include <windows.h>` `#include <conio.h>` Implement reading keyboard for Windows
