@@ -536,13 +536,13 @@ void update()
     if (left == WRONG || mid == WRONG || right == WRONG)
     {
         player_line->fill_bucket(-1);
-        if (timer->countdown - 5 < 0)
+        if (timer->countdown - 3 < 0)
         {
             timer->countdown = 0;
         }
         else
         {
-            timer->countdown -= 5;
+            timer->countdown -= 3;
         }
         timer->deducted = true;
         recover = false;
