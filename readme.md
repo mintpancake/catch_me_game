@@ -19,7 +19,7 @@ Chen Xueqing        3035638351
    4. Run `main`
 - For Mac OS
    - Oops! We don't support that. 
-- Caution! This is a real-time game, better performance when running locally. 
+- Caution! This is a real-time game. It performs better when running locally. 
 ***
 ## Game Description
 ### Overall Description
