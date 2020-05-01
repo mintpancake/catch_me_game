@@ -70,7 +70,6 @@ int main()
             leftTime = 0;
             while (level <= 10)
             {
-                destroy();
                 init();
                 thread t_game(game);
                 t_game.detach();
@@ -358,6 +357,7 @@ void tick()
 
 void init()
 {
+    destroy();
     srand(time(NULL));
     word = new Word{0, "", ""};
     player_line = new Player_line{"", 25};
