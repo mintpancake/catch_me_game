@@ -362,7 +362,7 @@ void init()
     word = new Word{0, "", ""};
     player_line = new Player_line{"", 25};
     fall = new Fall(WIDTH, HEIGHT - 1);
-    timer = new Timer(100 + leftTime);
+    timer = new Timer(90 + leftTime);
     status = new Status();
     if (playerName == "Debug") //cheat
     {
@@ -488,13 +488,13 @@ void update()
     if (left == WRONG || mid == WRONG || right == WRONG)
     {
         player_line->fill_bucket(-1);
-        if (timer->countdown - 3 < 0)
+        if (timer->countdown - 5 < 0)
         {
             timer->countdown = 0;
         }
         else
         {
-            timer->countdown -= 3;
+            timer->countdown -= 5;
         }
         timer->deducted = true;
         recover = false;
