@@ -15,7 +15,7 @@ Chen Xueqing        3035638351
 - For Linux
    1. Go to `switch.h`
    2. Define `LINUX`
-   3. Use command `make main`<br />or Compile using `g++ -pedantic-errors -std=c++11 welcome.cpp keyboard.cpp menu.cpp main.cpp -o main -lpthread`
+   3. Use command `make main`<br />Alternatively, compile using `g++ -pedantic-errors -std=c++11 welcome.cpp keyboard.cpp menu.cpp main.cpp -o main -lpthread`
    4. Run `main`
 - For Mac OS
    - Oops! We don't support that. 
