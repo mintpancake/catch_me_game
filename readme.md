@@ -62,6 +62,6 @@ After the game, the player will be credited to the leaderboard. The player who p
 
 ***
 
-## Some Non-standard C/C++ libraries
-- `include <windows.h>` `#include <conio.h>` Implement reading keyboard for Windows
+## Some Non-standard C/C++ Libraries
+- `#include <windows.h>` `#include <conio.h>` Implement reading keyboard for Windows
 - `#include <termios.h>` `#include <unistd.h>` Implement reading keyboard for Linux
