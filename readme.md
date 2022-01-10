@@ -1,4 +1,4 @@
-# ENGG1340 Project
+# Word-guessing Game
 
 ## Catch Me
 ***
